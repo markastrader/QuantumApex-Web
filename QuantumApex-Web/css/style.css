@@ -437,3 +437,34 @@ nav{
 }
 
 }
+/* ===========================================
+Animation
+=========================================== */
+
+.hidden{
+
+    opacity:0;
+
+    transform:translateY(40px);
+
+    transition:all .8s ease;
+
+}
+
+.show{
+
+    opacity:1;
+
+    transform:translateY(0);
+
+}
+
+/* Navbar ketika scroll */
+
+.navbar-scrolled{
+
+    background:#070b14;
+
+    box-shadow:0 8px 30px rgba(0,0,0,.35);
+
+}
