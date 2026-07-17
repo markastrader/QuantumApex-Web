@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>QuantumApex Matrix Gold Edition — Performance Report V2</title>
+<title>QuantumApex Matrix Gold — Performance Report V2</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -635,7 +635,7 @@
   .rpt-footer {
     border-top: 1px solid var(--gray-200);
     padding: 18px 0 0 0;
-    margin-top: 10px;
+    margin-top: 28px;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
@@ -722,13 +722,14 @@
      RISK DISCLAIMER CARD
   ============================================== */
   .risk-disclaimer {
-    background: var(--white);
-    border: 1px solid rgba(201,162,39,0.30);
-    border-left: 3px solid var(--gold);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    margin-bottom: 20px;
-    padding: 18px 22px 16px;
+    background: #fdf9ef;
+    border: 1px solid rgba(201,162,39,0.45);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(201,162,39,0.12), 0 1px 3px rgba(0,0,0,0.06);
+    margin-top: 36px;
+    margin-bottom: 0;
+    padding: 22px 26px 20px;
     display: flex;
     gap: 16px;
     align-items: flex-start;
@@ -828,10 +829,8 @@
 <div class="rpt-header">
   <div class="rpt-header-top">
     <div class="rpt-brand-block">
-      <div class="rpt-brand-eyebrow">Institutional AI Trading System</div>
-      <div class="rpt-brand">QuantumApex <span>Matrix Gold Edition</span></div>
-      <div class="rpt-subtitle">Performance Report</div>
-      <div class="rpt-tagline">Powered by Adaptive Neural Intelligence</div>
+      <div class="rpt-brand">EA QuantumApex <span>Matrix</span></div>
+      <div class="rpt-subtitle">Dedicated to the late Mbah Sastro and Mbah Kasimin</div>
     </div>
     <div class="rpt-badge">
       <span class="rpt-badge-edition">Gold Edition</span>
@@ -868,38 +867,6 @@
     </div>
   </div>
 </div>
-<!-- ==============================================
-     RISK DISCLAIMER
-     Static content - not an MQL5 data binding
-============================================== -->
-<div class="risk-disclaimer">
-  <div class="risk-disclaimer-icon">&#9432;</div>
-  <div class="risk-disclaimer-body">
-    <div class="risk-disclaimer-title">Important Risk Disclosure</div>
-    <div class="risk-disclaimer-text">
-      <strong>Trading financial markets involves substantial risk of loss and is not appropriate for all market participants.</strong>
-      Performance data presented in this report is provided for informational purposes only and does not constitute financial advice, a solicitation, or a guarantee of future results.
-      Past performance, regardless of the period or conditions under which it was achieved, is not indicative of future performance.
-      <br><br>
-      This system operates as an Expert Advisor (EA) - an automated algorithm that executes trades based on pre-defined logic and market conditions.
-      Automated strategies carry inherent limitations: they cannot anticipate extraordinary market events, regulatory changes, broker execution variances, or connectivity failures, all of which may adversely affect results.
-      No algorithm eliminates market risk.
-      <br><br>
-      Users are solely responsible for their own trading decisions, account oversight, and risk management.
-      Only commit capital you can afford to lose in its entirety, maintain appropriate position sizing, and consult a qualified financial adviser before engaging in leveraged or automated trading.
-    </div>
-    <div class="risk-disclaimer-pills">
-      <span class="risk-pill">Not Financial Advice</span>
-      <span class="risk-pill">Capital at Risk</span>
-      <span class="risk-pill">Automated Execution</span>
-      <span class="risk-pill">Past Performance &#8800; Future Results</span>
-      <span class="risk-pill">User Responsibility</span>
-      <span class="risk-pill">Market Risk Applies</span>
-    </div>
-  </div>
-</div>
-
-
 <!-- ------------------------------------------
      SECTION 1: DASHBOARD (3-column)
      MQL5 data: Balance, Equity, FloatingPL,
@@ -918,7 +885,7 @@
       <tr><td class="lbl">Balance</td><td class="val">1014.02 USD</td></tr>
       <tr><td class="lbl">Equity</td><td class="val">1014.02 USD</td></tr>
       <tr><td class="lbl">Floating P/L</td><td class="val">+0.00 USD</td></tr>
-      <tr><td class="lbl">Current Drawdown</td><td class="val val-red">0.44%</td></tr>
+      <tr><td class="lbl">Current Drawdown</td><td class="val val-red">0.00%</td></tr>
       <tr><td class="lbl">Maximum Drawdown</td><td class="val val-red">1.10%</td></tr>
       <tr><td class="lbl">Leverage</td><td class="val">1:500</td></tr>
       <tr><td class="lbl">Account Currency</td><td class="val">USD</td></tr>
@@ -1673,16 +1640,47 @@
 </div>
 
 
+<!-- ==============================================
+     RISK DISCLAIMER
+     Static content - not an MQL5 data binding
+============================================== -->
+<div class="risk-disclaimer">
+  <div class="risk-disclaimer-icon">&#9432;</div>
+  <div class="risk-disclaimer-body">
+    <div class="risk-disclaimer-title">Important Risk Disclosure</div>
+    <div class="risk-disclaimer-text">
+      <strong>Trading financial markets involves substantial risk of loss and is not appropriate for all market participants.</strong>
+      Performance data presented in this report is provided for informational purposes only and does not constitute financial advice, a solicitation, or a guarantee of future results.
+      Past performance, regardless of the period or conditions under which it was achieved, is not indicative of future performance.
+      <br><br>
+      This system operates as an Expert Advisor (EA) - an automated algorithm that executes trades based on pre-defined logic and market conditions.
+      Automated strategies carry inherent limitations: they cannot anticipate extraordinary market events, regulatory changes, broker execution variances, or connectivity failures, all of which may adversely affect results.
+      No algorithm eliminates market risk.
+      <br><br>
+      Users are solely responsible for their own trading decisions, account oversight, and risk management.
+      Only commit capital you can afford to lose in its entirety, maintain appropriate position sizing, and consult a qualified financial adviser before engaging in leveraged or automated trading.
+    </div>
+    <div class="risk-disclaimer-pills">
+      <span class="risk-pill">Not Financial Advice</span>
+      <span class="risk-pill">Capital at Risk</span>
+      <span class="risk-pill">Automated Execution</span>
+      <span class="risk-pill">Past Performance &#8800; Future Results</span>
+      <span class="risk-pill">User Responsibility</span>
+      <span class="risk-pill">Market Risk Applies</span>
+    </div>
+  </div>
+</div>
+
 <!-- ------------------------------------------
      FOOTER
 ------------------------------------------ -->
 <div class="rpt-footer">
   <div class="rpt-footer-left">
-    <b>Developer / Owner:</b> Srianto<br>
-    <b>Office:</b> Jl. Solo &mdash; Karang Gede KM.25, Sragen 57276
+    <b>Developer:</b> Srianto Doang<br>
+    <b>Office:</b> Jl. Solo - Karang Gede KM.25, Sragen 57276
   </div>
   <div class="rpt-footer-right">
-    Automatically Generated by <b>QuantumApex Matrix Gold Edition</b><br>
+    Automatically Generated by <b>QuantumApex Matrix Gold</b><br>
     This report is generated directly from internal EA statistics and MetaTrader 5 History. No manual editing.
   </div>
 </div>
