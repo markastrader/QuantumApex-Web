@@ -277,84 +277,6 @@
   .card-full { margin-bottom: 14px; }
 
   /* ------------------------------------------
-     TRADE ACTIVITY
-  ------------------------------------------ */
-  .section-label {
-    padding: 6px 15px 4px;
-    font-size: 8.5px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--gray-400);
-    border-bottom: 1px solid var(--gray-200);
-    background: var(--gray-100);
-  }
-  .dir-summary-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1px;
-    background: var(--gray-200);
-  }
-  .dir-cell {
-    background: var(--white);
-    padding: 20px 22px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    transition: background var(--transition);
-  }
-  .dir-cell:hover { background: var(--gray-50); }
-  .dir-cell-label {
-    font-size: 8px;
-    font-weight: 700;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-  }
-  .dir-cell-label.buy  { color: var(--blue); }
-  .dir-cell-label.sell { color: var(--blue-pink); }
-  .dir-cell-count { font-size: 28px; font-weight: 800; line-height: 1; }
-  .dir-cell-count.buy  { color: var(--blue); }
-  .dir-cell-count.sell { color: var(--blue-pink); }
-  .dir-cell-sub { font-size: 10.5px; color: var(--gray-400); letter-spacing: 0.3px; }
-
-  .trade-stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    background: var(--gray-200);
-    border-top: 1px solid var(--gray-200);
-  }
-  .trade-stat-cell {
-    background: var(--white);
-    padding: 13px 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    border-right: 1px solid var(--gray-200);
-    transition: background var(--transition);
-  }
-  .trade-stat-cell:last-child { border-right: none; }
-  .trade-stat-cell:hover { background: var(--gray-50); }
-  .trade-stat-lbl {
-    font-size: 7.5px;
-    font-weight: 700;
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
-    color: var(--gray-400);
-  }
-  .trade-stat-val {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--gray-800);
-    line-height: 1.1;
-  }
-  .trade-stat-val.profit { color: var(--green); }
-  .trade-stat-val.loss   { color: var(--red); }
-  .trade-stat-val.blue   { color: var(--blue); }
-
-  /* ------------------------------------------
      PERFORMANCE CALENDAR
   ------------------------------------------ */
   .yr-cal-wrap {
@@ -755,14 +677,6 @@
     .dashboard-grid { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
     .dashboard-grid .card:last-child { grid-column: span 1; }
 
-    /* Trade Activity */
-    .dir-cell { padding: 16px 14px; }
-    .dir-cell-count { font-size: 24px; }
-    .trade-stats-row { grid-template-columns: repeat(2, 1fr); }
-    .trade-stat-cell:nth-child(2n) { border-right: none; }
-    .trade-stat-cell:nth-child(1),
-    .trade-stat-cell:nth-child(2) { border-bottom: 1px solid var(--gray-200); }
-
     /* Calendar */
     .yr-months-grid { grid-template-columns: 1fr; }
     .mini-month-name { font-size: 11px; letter-spacing: 2px; }
@@ -803,6 +717,78 @@
   }
 
   /* ------------------------------------------
+
+  /* ==============================================
+     RISK DISCLAIMER CARD
+  ============================================== */
+  .risk-disclaimer {
+    background: var(--white);
+    border: 1px solid rgba(201,162,39,0.30);
+    border-left: 3px solid var(--gold);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 20px;
+    padding: 18px 22px 16px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .risk-disclaimer-icon {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    line-height: 1;
+    margin-top: 1px;
+  }
+  .risk-disclaimer-body { flex: 1; min-width: 0; }
+  .risk-disclaimer-title {
+    font-size: 8.5px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 7px;
+  }
+  .risk-disclaimer-text {
+    font-size: 11px;
+    color: var(--gray-600);
+    line-height: 1.65;
+  }
+  .risk-disclaimer-text strong { color: var(--gray-800); font-weight: 700; }
+  .risk-disclaimer-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+  }
+  .risk-pill {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--gray-600);
+    background: var(--gray-100);
+    border: 1px solid var(--gray-200);
+    border-radius: 3px;
+    padding: 3px 8px;
+    white-space: nowrap;
+  }
+  @media (max-width: 640px) {
+    .risk-disclaimer { padding: 14px 16px 12px; gap: 12px; }
+    .risk-disclaimer-icon { width: 28px; height: 28px; font-size: 12px; }
+    .risk-disclaimer-text { font-size: 10.5px; }
+  }
+  @media print {
+    .risk-disclaimer { border-left-width: 2px; box-shadow: none; break-inside: avoid; }
+  }
+
      PRINT / PDF
   ------------------------------------------ */
   @media print {
@@ -882,6 +868,37 @@
     </div>
   </div>
 </div>
+<!-- ==============================================
+     RISK DISCLAIMER
+     Static content - not an MQL5 data binding
+============================================== -->
+<div class="risk-disclaimer">
+  <div class="risk-disclaimer-icon">&#9432;</div>
+  <div class="risk-disclaimer-body">
+    <div class="risk-disclaimer-title">Important Risk Disclosure</div>
+    <div class="risk-disclaimer-text">
+      <strong>Trading financial markets involves substantial risk of loss and is not appropriate for all market participants.</strong>
+      Performance data presented in this report is provided for informational purposes only and does not constitute financial advice, a solicitation, or a guarantee of future results.
+      Past performance, regardless of the period or conditions under which it was achieved, is not indicative of future performance.
+      <br><br>
+      This system operates as an Expert Advisor (EA) - an automated algorithm that executes trades based on pre-defined logic and market conditions.
+      Automated strategies carry inherent limitations: they cannot anticipate extraordinary market events, regulatory changes, broker execution variances, or connectivity failures, all of which may adversely affect results.
+      No algorithm eliminates market risk.
+      <br><br>
+      Users are solely responsible for their own trading decisions, account oversight, and risk management.
+      Only commit capital you can afford to lose in its entirety, maintain appropriate position sizing, and consult a qualified financial adviser before engaging in leveraged or automated trading.
+    </div>
+    <div class="risk-disclaimer-pills">
+      <span class="risk-pill">Not Financial Advice</span>
+      <span class="risk-pill">Capital at Risk</span>
+      <span class="risk-pill">Automated Execution</span>
+      <span class="risk-pill">Past Performance &#8800; Future Results</span>
+      <span class="risk-pill">User Responsibility</span>
+      <span class="risk-pill">Market Risk Applies</span>
+    </div>
+  </div>
+</div>
+
 
 <!-- ------------------------------------------
      SECTION 1: DASHBOARD (3-column)
@@ -901,7 +918,7 @@
       <tr><td class="lbl">Balance</td><td class="val">1017.57 USD</td></tr>
       <tr><td class="lbl">Equity</td><td class="val">1017.57 USD</td></tr>
       <tr><td class="lbl">Floating P/L</td><td class="val">+0.00 USD</td></tr>
-      <tr><td class="lbl">Current Drawdown</td><td class="val val-red">0.71%</td></tr>
+      <tr><td class="lbl">Current Drawdown</td><td class="val val-red">0.00%</td></tr>
       <tr><td class="lbl">Maximum Drawdown</td><td class="val val-red">1.10%</td></tr>
       <tr><td class="lbl">Leverage</td><td class="val">1:500</td></tr>
       <tr><td class="lbl">Account Currency</td><td class="val">USD</td></tr>
@@ -916,8 +933,8 @@
       <tr><td class="lbl">Winning Trades</td><td class="val val-green">30</td></tr>
       <tr><td class="lbl">Losing Trades</td><td class="val val-red">21</td></tr>
       <tr><td class="lbl">Win Rate</td><td class="val val-green">58.8%</td></tr>
-      <tr><td class="lbl">Profit Factor</td><td class="val">1.39</td></tr>
-      <tr><td class="lbl">Recovery Factor</td><td class="val">1.40</td></tr>
+      <tr><td class="lbl">Profit Factor</td><td class="val">1.45</td></tr>
+      <tr><td class="lbl">Recovery Factor</td><td class="val">1.59</td></tr>
       <tr><td class="lbl">Net Profit</td><td class="val val-green">+17.57 USD</td></tr>
     </table>
   </div>
@@ -937,49 +954,6 @@
   </div>
 
 </div><!-- /dashboard-grid -->
-
-<!-- ------------------------------------------
-     SECTION 2: TRADE ACTIVITY
-     MQL5 data: BuyCount, BuyProfit, BuyLoss,
-       SellCount, SellProfit, SellLoss,
-       ProfitTrades, LossTrades, TotalTrades, WinRate
------------------------------------------- -->
-<div class="card card-full">
-  <div class="card-header"><div class="card-header-bar"></div><span class="card-title">Trade Activity</span></div>
-
-  <div class="dir-summary-grid">
-    <div class="dir-cell">
-      <div class="dir-cell-label buy">&#9650; BUY Trades</div>
-      <div class="dir-cell-count buy">45</div>
-      <div class="dir-cell-sub">Profit: 27 &nbsp;|&nbsp; Loss: 18</div>
-    </div>
-    <div class="dir-cell">
-      <div class="dir-cell-label sell">&#9660; SELL Trades</div>
-      <div class="dir-cell-count sell">6</div>
-      <div class="dir-cell-sub">Profit: 3 &nbsp;|&nbsp; Loss: 3</div>
-    </div>
-  </div>
-
-  <div class="trade-stats-row">
-    <div class="trade-stat-cell">
-      <div class="trade-stat-lbl">Profit Trades</div>
-      <div class="trade-stat-val profit">30</div>
-    </div>
-    <div class="trade-stat-cell">
-      <div class="trade-stat-lbl">Loss Trades</div>
-      <div class="trade-stat-val loss">21</div>
-    </div>
-    <div class="trade-stat-cell">
-      <div class="trade-stat-lbl">Total Trades</div>
-      <div class="trade-stat-val">51</div>
-    </div>
-    <div class="trade-stat-cell">
-      <div class="trade-stat-lbl">Win Rate</div>
-      <div class="trade-stat-val blue">58.8%</div>
-    </div>
-  </div>
-</div>
-
 
 <div class="card yr-cal-wrap">
   <div class="yr-cal-header">
