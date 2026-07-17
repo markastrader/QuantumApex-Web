@@ -1,0 +1,1722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuantumApex Matrix Gold Edition — Performance Report V2</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:         #0d1b2a;
+    --navy-mid:     #162032;
+    --navy-light:   #1e2f44;
+    --navy-hover:   #243550;
+    --gold:         #c9a227;
+    --gold-light:   #e6c04c;
+    --gold-dim:     rgba(201,162,39,0.18);
+    --gold-border:  rgba(201,162,39,0.35);
+    --white:        #ffffff;
+    --gray-50:      #f9fafb;
+    --gray-100:     #f4f5f7;
+    --gray-200:     #e8eaed;
+    --gray-300:     #d1d5db;
+    --gray-400:     #9ca3af;
+    --gray-600:     #4b5563;
+    --gray-800:     #1f2937;
+    --green:        #15803d;
+    --green-light:  #16a34a;
+    --green-bg:     #dcfce7;
+    --green-bg-2:   #bbf7d0;
+    --red:          #b91c1c;
+    --red-bg:       #fee2e2;
+    --red-bg-2:     #fecaca;
+    --blue:         #1d4ed8;
+    --blue-pink:    #9d174d;
+    --radius:       5px;
+    --radius-sm:    3px;
+    --shadow-sm:    0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+    --shadow-md:    0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06);
+    --shadow-lg:    0 10px 30px rgba(0,0,0,0.18);
+    --transition:   0.18s ease;
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+    background: #eef0f3;
+    color: var(--gray-800);
+    font-size: 12.5px;
+    line-height: 1.55;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page-wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 32px 44px 48px;
+  }
+
+  /* ------------------------------------------
+     HEADER
+  ------------------------------------------ */
+  .rpt-header {
+    background: linear-gradient(140deg, #0d1b2a 0%, #0a1e35 55%, #0f2647 100%);
+    border-radius: var(--radius);
+    padding: 30px 34px 26px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(255,255,255,0.04) inset;
+    border-bottom: 2px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .rpt-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 40%, var(--gold-light) 50%, var(--gold) 60%, transparent 100%);
+    opacity: 0.7;
+  }
+  .rpt-header::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: 220px;
+    background: radial-gradient(ellipse at right center, rgba(201,162,39,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .rpt-header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border-bottom: 1px solid rgba(201,162,39,0.18);
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+  }
+  .rpt-brand-block { display: flex; flex-direction: column; gap: 4px; }
+  .rpt-brand-eyebrow {
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.75;
+  }
+  .rpt-brand {
+    font-size: 27px;
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: -0.5px;
+    line-height: 1.12;
+  }
+  .rpt-brand span { color: var(--gold); }
+  .rpt-subtitle {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.8px;
+    color: #8da5c0;
+    margin-top: 3px;
+  }
+  .rpt-tagline {
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.45;
+    margin-top: 9px;
+  }
+  .rpt-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #d4aa2f 0%, #a07c10 100%);
+    color: var(--navy);
+    border-radius: 6px;
+    padding: 15px 24px;
+    box-shadow: 0 6px 16px rgba(201,162,39,0.40), inset 0 1px 0 rgba(255,255,255,0.25);
+    min-width: 114px;
+    gap: 5px;
+    flex-shrink: 0;
+    transition: box-shadow var(--transition);
+  }
+  .rpt-badge:hover {
+    box-shadow: 0 8px 22px rgba(201,162,39,0.52), inset 0 1px 0 rgba(255,255,255,0.25);
+  }
+  .rpt-badge-edition {
+    font-size: 7px;
+    font-weight: 900;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(13,27,42,0.65);
+  }
+  .rpt-badge-symbol {
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: var(--navy);
+    line-height: 1;
+  }
+  .rpt-badge-divider {
+    width: 36px;
+    height: 1px;
+    background: rgba(13,27,42,0.25);
+  }
+  .rpt-header-meta {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px 12px;
+  }
+  .rpt-meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 9px 13px;
+    background: rgba(255,255,255,0.04);
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255,255,255,0.07);
+    transition: background var(--transition), border-color var(--transition);
+  }
+  .rpt-meta-block:hover {
+    background: rgba(255,255,255,0.07);
+    border-color: rgba(201,162,39,0.22);
+  }
+  .rpt-meta-block.wide { grid-column: span 2; }
+  .rpt-meta-label {
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.65;
+  }
+  .rpt-meta-value {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: #dde5ef;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ------------------------------------------
+     DASHBOARD GRID
+  ------------------------------------------ */
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 14px;
+    align-items: start;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow var(--transition), transform var(--transition);
+  }
+  .card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  .card-header {
+    background: var(--navy-mid);
+    padding: 9px 15px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    border-bottom: 1px solid rgba(201,162,39,0.12);
+  }
+  .card-header-bar {
+    width: 3px;
+    height: 14px;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold));
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .card-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.92;
+  }
+  .data-table { width: 100%; border-collapse: collapse; }
+  .data-table tr { border-bottom: 1px solid var(--gray-200); }
+  .data-table tr:last-child { border-bottom: none; }
+  .data-table tr:nth-child(even) td { background: var(--gray-50); }
+  .data-table tr:hover td { background: #eef4ff; }
+  .data-table td {
+    padding: 7px 15px;
+    font-size: 11.5px;
+    vertical-align: middle;
+    transition: background var(--transition);
+  }
+  .data-table td.lbl {
+    color: var(--gray-600);
+    font-weight: 600;
+    width: 52%;
+    white-space: nowrap;
+    font-size: 11px;
+    letter-spacing: 0.2px;
+  }
+  .data-table td.val {
+    color: var(--gray-800);
+    font-weight: 600;
+    font-size: 11.5px;
+  }
+  .val-green { color: var(--green) !important; font-weight: 700 !important; }
+  .val-red   { color: var(--red)   !important; font-weight: 700 !important; }
+  .val-blue  { color: var(--blue)  !important; font-weight: 700 !important; }
+  .card-full { margin-bottom: 14px; }
+
+  /* ------------------------------------------
+     TRADE ACTIVITY
+  ------------------------------------------ */
+  .section-label {
+    padding: 6px 15px 4px;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    border-bottom: 1px solid var(--gray-200);
+    background: var(--gray-100);
+  }
+  .dir-summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--gray-200);
+  }
+  .dir-cell {
+    background: var(--white);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    transition: background var(--transition);
+  }
+  .dir-cell:hover { background: var(--gray-50); }
+  .dir-cell-label {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+  }
+  .dir-cell-label.buy  { color: var(--blue); }
+  .dir-cell-label.sell { color: var(--blue-pink); }
+  .dir-cell-count { font-size: 28px; font-weight: 800; line-height: 1; }
+  .dir-cell-count.buy  { color: var(--blue); }
+  .dir-cell-count.sell { color: var(--blue-pink); }
+  .dir-cell-sub { font-size: 10.5px; color: var(--gray-400); letter-spacing: 0.3px; }
+
+  .trade-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    background: var(--gray-200);
+    border-top: 1px solid var(--gray-200);
+  }
+  .trade-stat-cell {
+    background: var(--white);
+    padding: 13px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    border-right: 1px solid var(--gray-200);
+    transition: background var(--transition);
+  }
+  .trade-stat-cell:last-child { border-right: none; }
+  .trade-stat-cell:hover { background: var(--gray-50); }
+  .trade-stat-lbl {
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+  }
+  .trade-stat-val {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--gray-800);
+    line-height: 1.1;
+  }
+  .trade-stat-val.profit { color: var(--green); }
+  .trade-stat-val.loss   { color: var(--red); }
+  .trade-stat-val.blue   { color: var(--blue); }
+
+  /* ------------------------------------------
+     PERFORMANCE CALENDAR
+  ------------------------------------------ */
+  .yr-cal-wrap {
+    margin-bottom: 0;
+    overflow: hidden;
+  }
+
+  .yr-cal-header {
+    background: var(--navy-mid);
+    padding: 11px 18px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    border-bottom: 1px solid rgba(201,162,39,0.15);
+  }
+  .yr-cal-header-left { display: flex; align-items: center; gap: 10px; }
+  .yr-cal-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0.92;
+  }
+  .yr-cal-subtitle {
+    font-size: 8.5px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    color: #8da5c0;
+    margin-top: 2px;
+  }
+  .yr-cal-badge {
+    background: var(--gold-dim);
+    border: 1px solid var(--gold-border);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    white-space: nowrap;
+  }
+
+  .yr-cal-legend {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 8px 18px;
+    background: rgba(22,32,50,0.03);
+    border-bottom: 1px solid var(--gray-200);
+    flex-wrap: wrap;
+  }
+  .legend-item { display: flex; align-items: center; gap: 6px; }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .legend-dot.profit { background: var(--green); }
+  .legend-dot.loss   { background: var(--red); }
+  .legend-dot.none   { background: var(--gray-200); border: 1px solid var(--gray-300); }
+  .legend-lbl {
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    color: var(--gray-600);
+    text-transform: uppercase;
+  }
+
+  /* 2-col × N grid */
+  .yr-months-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--gray-300);
+    padding: 0;
+  }
+
+  /* Single mini-month */
+  .mini-month {
+    background: var(--white);
+    padding: 0;
+    position: relative;
+    transition: box-shadow var(--transition);
+  }
+  .mini-month:hover {
+    z-index: 2;
+    box-shadow: 0 0 0 2px rgba(201,162,39,0.25);
+  }
+
+  /* month with trades: subtle gold top accent */
+  .mini-month.has-trades::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    opacity: 0.55;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .mini-month-header {
+    background: var(--navy);
+    padding: 10px 15px 8px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .mini-month-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 50%; right: 0;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 1px;
+    background: rgba(201,162,39,0.3);
+  }
+  .mini-month-name {
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    line-height: 1.2;
+  }
+  .mini-month-year {
+    font-size: 8.5px;
+    font-weight: 500;
+    color: rgba(201,162,39,0.50);
+    letter-spacing: 2px;
+    margin-top: 1px;
+  }
+
+  /* CURRENT MONTH */
+  .mini-month.is-current .mini-month-header {
+    background: linear-gradient(140deg, #0d1b2a 0%, #0c2348 100%);
+    border-bottom: 2px solid var(--gold);
+    box-shadow: 0 2px 12px rgba(201,162,39,0.15);
+  }
+  .mini-month.is-current .mini-month-name {
+    font-size: 13px;
+    color: var(--gold-light);
+  }
+  .mini-month.is-current .mini-month-year {
+    color: rgba(201,162,39,0.85);
+    font-weight: 600;
+  }
+  .mini-month.is-current::after {
+    content: 'CURRENT';
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    font-size: 6.5px;
+    font-weight: 900;
+    letter-spacing: 1.5px;
+    color: var(--navy);
+    background: var(--gold);
+    padding: 2px 5px;
+    border-radius: 2px;
+    line-height: 1.4;
+    z-index: 4;
+  }
+  .mini-month.is-current .mini-month-footer {
+    background: #f0f8f4;
+  }
+
+  /* Mini calendar table */
+  .mini-cal {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  .mini-cal th {
+    padding: 7px 4px;
+    text-align: center;
+    font-size: 8.5px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    background: var(--navy-light);
+    border-bottom: 1px solid rgba(201,162,39,0.20);
+  }
+  .mini-cal td {
+    padding: 5px 3px;
+    text-align: center;
+    vertical-align: top;
+    border: 1px solid var(--gray-200);
+    cursor: default;
+    position: relative;
+    transition: background var(--transition), transform 0.12s ease;
+    min-height: 44px;
+    height: 44px;
+  }
+  .mini-cal td:not(.cal-empty):not(.cal-weekend):hover {
+    background: rgba(201,162,39,0.06) !important;
+    z-index: 1;
+  }
+  .mini-cal td.cal-empty {
+    background: var(--gray-50);
+    cursor: default;
+  }
+  .mini-cal td.cal-weekend { background: #fafbfd; }
+
+  .mini-cal td.day-profit { background: var(--green-bg); }
+  .mini-cal td.day-loss   { background: var(--red-bg); }
+  .mini-cal td.day-profit:hover { background: var(--green-bg-2) !important; }
+  .mini-cal td.day-loss:hover   { background: var(--red-bg-2) !important; }
+  .mini-cal td.cal-weekend.day-profit { background: #d1fae5; }
+  .mini-cal td.cal-weekend.day-loss   { background: #fee2e2; }
+
+  .mini-day-num {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--gray-600);
+    display: block;
+    line-height: 1.3;
+  }
+  .mini-day-num.profit { color: var(--green-light); }
+  .mini-day-num.loss   { color: var(--red); }
+
+  .mini-day-ret {
+    font-size: 9.5px;
+    font-weight: 700;
+    display: block;
+    line-height: 1.2;
+  }
+  .mini-day-ret.profit { color: var(--green); }
+  .mini-day-ret.loss   { color: var(--red); }
+  .mini-day-ret.none   { color: var(--gray-300); font-size: 9px; }
+
+  /* Tooltip */
+  .mini-cal td[data-tooltip] { cursor: pointer; }
+  .mini-cal td[data-tooltip]:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0d1b2a;
+    color: var(--white);
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.6;
+    padding: 7px 10px;
+    border-radius: var(--radius-sm);
+    white-space: pre;
+    z-index: 100;
+    pointer-events: none;
+    border: 1px solid rgba(201,162,39,0.55);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    min-width: 100px;
+    text-align: left;
+    letter-spacing: 0.2px;
+  }
+  .mini-cal td[data-tooltip]:hover::before {
+    content: '';
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(201,162,39,0.55);
+    z-index: 101;
+    pointer-events: none;
+  }
+
+  /* Month footer */
+  .mini-month-footer {
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-200);
+    padding: 7px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+  }
+  .mini-mth-lbl {
+    font-size: 8.5px;
+    font-weight: 700;
+    color: var(--gray-400);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+  .mini-mth-val {
+    font-size: 11.5px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .mini-mth-val.profit { color: var(--green); }
+  .mini-mth-val.loss   { color: var(--red); }
+  .mini-mth-val.none   { color: var(--gray-300); }
+
+  /* ------------------------------------------
+     YEAR SUMMARY BAR
+  ------------------------------------------ */
+  .yr-summary-section {
+    border-top: 1px solid var(--gray-200);
+    background: var(--white);
+    padding: 0;
+  }
+  .yr-summary-header {
+    padding: 8px 18px 7px;
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    border-bottom: 1px solid var(--gray-200);
+    background: var(--gray-50);
+  }
+  .yr-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .yr-sum-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 3px;
+    padding: 11px 18px;
+    border-right: 1px solid var(--gray-200);
+    border-bottom: 1px solid var(--gray-200);
+    transition: background var(--transition);
+  }
+  .yr-sum-item:hover { background: var(--gray-50); }
+  .yr-sum-item:nth-child(4n) { border-right: none; }
+  .yr-sum-item:nth-last-child(-n+4) { border-bottom: none; }
+  .yr-sum-lbl {
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gray-400);
+    white-space: nowrap;
+  }
+  .yr-sum-val {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--gray-800);
+    line-height: 1.15;
+    letter-spacing: -0.2px;
+  }
+  .yr-sum-val.profit { color: var(--green); }
+  .yr-sum-val.loss   { color: var(--red); }
+  .yr-sum-val.blue   { color: var(--blue); }
+
+  /* ------------------------------------------
+     FOOTER
+  ------------------------------------------ */
+  .rpt-footer {
+    border-top: 1px solid var(--gray-200);
+    padding: 18px 0 0 0;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .rpt-footer-left { font-size: 11px; color: var(--gray-600); line-height: 1.75; }
+  .rpt-footer-left b { color: var(--gray-800); font-weight: 700; }
+  .rpt-footer-right { font-size: 10.5px; color: var(--gray-400); text-align: right; line-height: 1.75; }
+
+  /* ------------------------------------------
+     RESPONSIVE — TABLET (= 900px)
+  ------------------------------------------ */
+  @media (max-width: 900px) {
+    .page-wrap { padding: 20px 24px 32px; }
+    .rpt-header-meta { grid-template-columns: repeat(3, 1fr); }
+    .rpt-meta-block.wide { grid-column: span 1; }
+    .dashboard-grid { grid-template-columns: 1fr 1fr; }
+    .dashboard-grid .card:last-child { grid-column: span 2; }
+    .yr-months-grid { grid-template-columns: repeat(2, 1fr); }
+    .yr-summary-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  /* ------------------------------------------
+     RESPONSIVE — MOBILE (= 640px)
+  ------------------------------------------ */
+  @media (max-width: 640px) {
+    .page-wrap { padding: 12px 14px 24px; }
+
+    /* Header */
+    .rpt-header { padding: 20px 18px 18px; }
+    .rpt-header-top { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .rpt-brand { font-size: 20px; }
+    .rpt-badge { align-self: flex-start; padding: 11px 18px; min-width: 100px; }
+    .rpt-header-meta { grid-template-columns: 1fr 1fr; gap: 6px 8px; }
+    .rpt-meta-block.wide { grid-column: span 1; }
+    .rpt-meta-value { font-size: 10.5px; }
+
+    /* Dashboard */
+    .dashboard-grid { grid-template-columns: 1fr; gap: 10px; margin-bottom: 10px; }
+    .dashboard-grid .card:last-child { grid-column: span 1; }
+
+    /* Trade Activity */
+    .dir-cell { padding: 16px 14px; }
+    .dir-cell-count { font-size: 24px; }
+    .trade-stats-row { grid-template-columns: repeat(2, 1fr); }
+    .trade-stat-cell:nth-child(2n) { border-right: none; }
+    .trade-stat-cell:nth-child(1),
+    .trade-stat-cell:nth-child(2) { border-bottom: 1px solid var(--gray-200); }
+
+    /* Calendar */
+    .yr-months-grid { grid-template-columns: 1fr; }
+    .mini-month-name { font-size: 11px; letter-spacing: 2px; }
+    .mini-cal td { min-height: 38px; height: 38px; padding: 4px 2px; }
+    .mini-day-num { font-size: 10px; }
+    .mini-day-ret { font-size: 8.5px; }
+    .mini-month.is-current::after { display: none; }
+
+    /* Calendar header badge wrap */
+    .yr-cal-header { flex-wrap: wrap; gap: 6px; }
+    .yr-cal-badge { font-size: 7.5px; padding: 3px 8px; }
+
+    /* Year Summary */
+    .yr-summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .yr-sum-item:nth-child(4n)      { border-right: 1px solid var(--gray-200); }
+    .yr-sum-item:nth-child(2n)      { border-right: none; }
+    .yr-sum-item:nth-last-child(-n+4) { border-bottom: 1px solid var(--gray-200); }
+    .yr-sum-item:nth-last-child(-n+2) { border-bottom: none; }
+    .yr-sum-lbl { white-space: normal; font-size: 7px; }
+    .yr-sum-val { font-size: 13px; }
+
+    /* Footer */
+    .rpt-footer { flex-direction: column; gap: 8px; }
+    .rpt-footer-right { text-align: left; }
+  }
+
+  /* ------------------------------------------
+     RESPONSIVE — VERY SMALL (= 380px)
+  ------------------------------------------ */
+  @media (max-width: 380px) {
+    .page-wrap { padding: 10px 10px 20px; }
+    .rpt-brand { font-size: 17px; }
+    .rpt-header-meta { grid-template-columns: 1fr; }
+    .mini-cal th { font-size: 7.5px; padding: 5px 2px; }
+    .mini-cal td { min-height: 32px; height: 32px; }
+    .mini-day-num { font-size: 9px; }
+    .mini-day-ret { font-size: 7.5px; }
+  }
+
+  /* ------------------------------------------
+     PRINT / PDF
+  ------------------------------------------ */
+  @media print {
+    body { background: #fff; }
+    .page-wrap { padding: 8px 12px; max-width: 100%; }
+    .card { box-shadow: none !important; border: 1px solid #ccc; break-inside: avoid; transform: none !important; }
+    .card:hover { box-shadow: none !important; transform: none !important; }
+    .mini-month { break-inside: avoid; }
+    .mini-month:hover { box-shadow: none !important; }
+    .dashboard-grid { gap: 8px; grid-template-columns: 1fr 1fr 1fr; }
+    .dashboard-grid .card:last-child { grid-column: auto; }
+    .rpt-header { border-radius: 0; box-shadow: none; }
+    .rpt-header::before { display: none; }
+    .rpt-header::after  { display: none; }
+    .rpt-badge { box-shadow: none; }
+    .yr-months-grid { grid-template-columns: repeat(2, 1fr); }
+    .yr-cal-wrap { break-inside: avoid; }
+    .yr-summary-section { break-inside: avoid; }
+    .mini-cal td { min-height: 36px; height: 36px; }
+    .mini-month.is-current::after { display: none; }
+    .rpt-footer { break-inside: avoid; }
+  }
+
+</style>
+</head>
+
+<body>
+<div class="page-wrap">
+
+<!-- ------------------------------------------
+     HEADER
+     MQL5 data sources:
+       ReportYear, CurrentMonth, ReportDate,
+       AccountBroker, AccountServer, AccountType,
+       AccountNumber, Symbol
+------------------------------------------ -->
+<div class="rpt-header">
+  <div class="rpt-header-top">
+    <div class="rpt-brand-block">
+      <div class="rpt-brand-eyebrow">Institutional AI Trading System</div>
+      <div class="rpt-brand">QuantumApex <span>Matrix Gold Edition</span></div>
+      <div class="rpt-subtitle">Performance Report</div>
+      <div class="rpt-tagline">Powered by Adaptive Neural Intelligence</div>
+    </div>
+    <div class="rpt-badge">
+      <span class="rpt-badge-edition">Gold Edition</span>
+      <div class="rpt-badge-divider"></div>
+      <!-- MQL5: Symbol -->
+      <span class="rpt-badge-symbol">XAUUSD</span>
+    </div>
+  </div>
+  <div class="rpt-header-meta">
+    <div class="rpt-meta-block">
+      <span class="rpt-meta-label">Broker</span>
+      <!-- MQL5: AccountBroker -->
+      <span class="rpt-meta-value">Exness Technologies Ltd</span>
+    </div>
+    <div class="rpt-meta-block">
+      <span class="rpt-meta-label">Server</span>
+      <!-- MQL5: AccountServer -->
+      <span class="rpt-meta-value">Exness-MT5Trial17</span>
+    </div>
+    <div class="rpt-meta-block">
+      <span class="rpt-meta-label">Account Type</span>
+      <!-- MQL5: AccountType -->
+      <span class="rpt-meta-value">Demo</span>
+    </div>
+    <div class="rpt-meta-block">
+      <span class="rpt-meta-label">Account Number</span>
+      <!-- MQL5: AccountNumber -->
+      <span class="rpt-meta-value">463662065</span>
+    </div>
+    <div class="rpt-meta-block">
+      <span class="rpt-meta-label">Symbol</span>
+      <!-- MQL5: Symbol -->
+      <span class="rpt-meta-value">XAUUSD</span>
+    </div>
+  </div>
+</div>
+
+<!-- ------------------------------------------
+     SECTION 1: DASHBOARD (3-column)
+     MQL5 data: Balance, Equity, FloatingPL,
+       CurrentDrawdown, MaxDrawdown, Leverage,
+       Currency, TotalTrades, WinTrades, LossTrades,
+       WinRate, ProfitFactor, RecoveryFactor, NetProfit,
+       EAVersion, Engine, ModelStatus, LearningStatus,
+       ExecutionStatus, RiskLevel, KillSwitch
+------------------------------------------ -->
+<div class="dashboard-grid">
+
+  <!-- CARD 1: ACCOUNT SNAPSHOT -->
+  <div class="card">
+    <div class="card-header"><div class="card-header-bar"></div><span class="card-title">Account Snapshot</span></div>
+    <table class="data-table">
+      <tr><td class="lbl">Balance</td><td class="val">1018.86 USD</td></tr>
+      <tr><td class="lbl">Equity</td><td class="val">1018.86 USD</td></tr>
+      <tr><td class="lbl">Floating P/L</td><td class="val">+0.00 USD</td></tr>
+      <tr><td class="lbl">Current Drawdown</td><td class="val val-red">0.00%</td></tr>
+      <tr><td class="lbl">Maximum Drawdown</td><td class="val val-red">1.10%</td></tr>
+      <tr><td class="lbl">Leverage</td><td class="val">1:500</td></tr>
+      <tr><td class="lbl">Account Currency</td><td class="val">USD</td></tr>
+    </table>
+  </div>
+
+  <!-- CARD 2: PERFORMANCE SUMMARY -->
+  <div class="card">
+    <div class="card-header"><div class="card-header-bar"></div><span class="card-title">Performance Summary</span></div>
+    <table class="data-table">
+      <tr><td class="lbl">Total Trades</td><td class="val">43</td></tr>
+      <tr><td class="lbl">Winning Trades</td><td class="val val-green">24</td></tr>
+      <tr><td class="lbl">Losing Trades</td><td class="val val-red">19</td></tr>
+      <tr><td class="lbl">Win Rate</td><td class="val val-green">55.8%</td></tr>
+      <tr><td class="lbl">Profit Factor</td><td class="val">1.60</td></tr>
+      <tr><td class="lbl">Recovery Factor</td><td class="val">1.71</td></tr>
+      <tr><td class="lbl">Net Profit</td><td class="val val-green">+18.86 USD</td></tr>
+    </table>
+  </div>
+
+  <!-- CARD 3: SYSTEM STATUS -->
+  <div class="card">
+    <div class="card-header"><div class="card-header-bar"></div><span class="card-title">System Status</span></div>
+    <table class="data-table">
+      <tr><td class="lbl">EA Version</td><td class="val">v15</td></tr>
+      <tr><td class="lbl">Engine</td><td class="val">AI</td></tr>
+      <tr><td class="lbl">Model Status</td><td class="val">Neural Adaptation</td></tr>
+      <tr><td class="lbl">Learning Status</td><td class="val">LEARNING 43/70</td></tr>
+      <tr><td class="lbl">Execution Status</td><td class="val">Ready</td></tr>
+      <tr><td class="lbl">Risk Level</td><td class="val">SAFE</td></tr>
+      <tr><td class="lbl">Kill Switch</td><td class="val">OK</td></tr>
+    </table>
+  </div>
+
+</div><!-- /dashboard-grid -->
+
+<!-- ------------------------------------------
+     SECTION 2: TRADE ACTIVITY
+     MQL5 data: BuyCount, BuyProfit, BuyLoss,
+       SellCount, SellProfit, SellLoss,
+       ProfitTrades, LossTrades, TotalTrades, WinRate
+------------------------------------------ -->
+<div class="card card-full">
+  <div class="card-header"><div class="card-header-bar"></div><span class="card-title">Trade Activity</span></div>
+
+  <div class="dir-summary-grid">
+    <div class="dir-cell">
+      <div class="dir-cell-label buy">&#9650; BUY Trades</div>
+      <div class="dir-cell-count buy">37</div>
+      <div class="dir-cell-sub">Profit: 21 &nbsp;|&nbsp; Loss: 16</div>
+    </div>
+    <div class="dir-cell">
+      <div class="dir-cell-label sell">&#9660; SELL Trades</div>
+      <div class="dir-cell-count sell">6</div>
+      <div class="dir-cell-sub">Profit: 3 &nbsp;|&nbsp; Loss: 3</div>
+    </div>
+  </div>
+
+  <div class="trade-stats-row">
+    <div class="trade-stat-cell">
+      <div class="trade-stat-lbl">Profit Trades</div>
+      <div class="trade-stat-val profit">24</div>
+    </div>
+    <div class="trade-stat-cell">
+      <div class="trade-stat-lbl">Loss Trades</div>
+      <div class="trade-stat-val loss">19</div>
+    </div>
+    <div class="trade-stat-cell">
+      <div class="trade-stat-lbl">Total Trades</div>
+      <div class="trade-stat-val">43</div>
+    </div>
+    <div class="trade-stat-cell">
+      <div class="trade-stat-lbl">Win Rate</div>
+      <div class="trade-stat-val blue">55.8%</div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card yr-cal-wrap">
+  <div class="yr-cal-header">
+    <div class="yr-cal-header-left">
+      <div class="card-header-bar"></div>
+      <div>
+        <div class="yr-cal-title">&#128197; Performance Calendar</div>
+        <div class="yr-cal-subtitle">Daily Trading Activity (Last 12 Months)</div>
+      </div>
+    </div>
+    <div class="yr-cal-badge">Jan 2026 &ndash; Jul 2026</div>
+  </div>
+  <div class="yr-cal-legend">
+    <div class="legend-item"><div class="legend-dot profit"></div><span class="legend-lbl">Profit Day</span></div>
+    <div class="legend-item"><div class="legend-dot loss"></div><span class="legend-lbl">Loss Day</span></div>
+    <div class="legend-item"><div class="legend-dot none"></div><span class="legend-lbl">No Trade</span></div>
+  </div>
+  <div class="yr-months-grid">
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">January</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">31</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">February</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-weekend"><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">March</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-weekend"><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">31</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">April</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">May</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">31</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">June</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month is-current has-trades">
+      <div class="mini-month-header">
+        <div class="mini-month-name">July</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="day-profit" data-tooltip="Thu Jul 16\nP/L: +7.39 USD\nReturn: +0.74%\nTrades: 39"><span class="mini-day-num profit">16</span><span class="mini-day-ret profit">+0.74%</span></td>
+        <td class="day-profit" data-tooltip="Fri Jul 17\nP/L: +11.47 USD\nReturn: +1.14%\nTrades: 5"><span class="mini-day-num profit">17</span><span class="mini-day-ret profit">+1.14%</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">31</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val profit">+1.89%</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">August</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-weekend"><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">31</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">September</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">October</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">31</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">November</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-weekend"><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+    <div class="mini-month">
+      <div class="mini-month-header">
+        <div class="mini-month-name">December</div>
+        <div class="mini-month-year">2026</div>
+      </div>
+      <table class="mini-cal"><thead><tr>
+        <th>M</th>        <th>T</th>        <th>W</th>        <th>T</th>        <th>F</th>        <th>S</th>        <th>S</th>
+      </tr></thead><tbody>
+      <tr>
+        <td class="cal-empty"></td>
+        <td><span class="mini-day-num">1</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">2</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">3</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">4</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">5</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">6</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">7</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">8</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">9</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">10</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">11</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">12</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">13</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">14</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">15</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">16</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">17</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">18</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">19</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">20</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">21</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">22</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">23</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">24</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">25</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">26</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-weekend"><span class="mini-day-num">27</span><span class="mini-day-ret none">&mdash;</span></td>
+      </tr><tr>
+        <td><span class="mini-day-num">28</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">29</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">30</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td><span class="mini-day-num">31</span><span class="mini-day-ret none">&mdash;</span></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+        <td class="cal-empty"></td>
+      </tr>
+      </tbody></table>
+      <div class="mini-month-footer">
+        <span class="mini-mth-lbl">Month Return</span>
+        <span class="mini-mth-val none">&mdash;</span>
+      </div>
+    </div>
+  </div>
+  <div class="yr-summary-section">
+    <div class="yr-summary-header">Year Summary &nbsp;&bull;&nbsp; January &ndash; July 2026</div>
+    <div class="yr-summary-grid">
+      <div class="yr-sum-item"><div class="yr-sum-lbl">Total Trading Days</div><div class="yr-sum-val">2</div></div>
+      <div class="yr-sum-item"><div class="yr-sum-lbl">Winning Days</div><div class="yr-sum-val profit">2</div></div>
+      <div class="yr-sum-item"><div class="yr-sum-lbl">Losing Days</div><div class="yr-sum-val loss">0</div></div>
+      <div class="yr-sum-item"><div class="yr-sum-lbl">Best Day</div><div class="yr-sum-val profit">+1.14%</div></div>
+      <div class="yr-sum-item"><div class="yr-sum-lbl">Worst Day</div><div class="yr-sum-val profit">+0.74%</div></div>
+      <div class="yr-sum-item"><div class="yr-sum-lbl">Current Month Return</div><div class="yr-sum-val profit">+1.89%</div></div>
+      <div class="yr-sum-item"><div class="yr-sum-lbl">YTD Return</div><div class="yr-sum-val profit">+1.89%</div></div>
+      <div class="yr-sum-item"><div class="yr-sum-lbl">Avg Daily Return</div><div class="yr-sum-val profit">+0.94%</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ------------------------------------------
+     FOOTER
+------------------------------------------ -->
+<div class="rpt-footer">
+  <div class="rpt-footer-left">
+    <b>Developer / Owner:</b> Srianto<br>
+    <b>Office:</b> Jl. Solo &mdash; Karang Gede KM.25, Sragen 57276
+  </div>
+  <div class="rpt-footer-right">
+    Automatically Generated by <b>QuantumApex Matrix Gold Edition</b><br>
+    This report is generated directly from internal EA statistics and MetaTrader 5 History. No manual editing.
+  </div>
+</div>
+
+</div><!-- /page-wrap -->
+
+
+
+</body>
+</html>
+
