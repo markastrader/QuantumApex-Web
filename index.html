@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="QuantumApex AI">
+  <meta name="robots" content="index, follow">
   <title>QuantumApex AI | Advanced AI-Powered Algorithmic Trading System for MetaTrader 5</title>
   <meta name="description" content="QuantumApex AI is an institutional-grade AI trading system and MetaTrader 5 Expert Advisor for XAUUSD. Features adaptive neural intelligence, multi-layer signal validation, autonomous risk management, and transparent forward-validation performance reporting for algorithmic trading.">
   <meta name="keywords" content="algorithmic trading, AI trading, MetaTrader 5, XAUUSD, Expert Advisor, trading bot">
@@ -13,218 +15,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-    :root{
-      --void:#06080D;--surface:#0D1018;--card:#111520;--card-border:#1E2535;
-      --gold:#B8973A;--gold-hi:#D4AF55;--gold-dim:#7A6228;
-      --gold-glow:rgba(184,151,58,0.15);--muted:#4A5568;
-      --text-dim:#8896A8;--text:#C8D0DC;--white:#EEF2F7;
-      --radius:6px;--radius-lg:12px;--transition:.25s ease;
-    }
-    html{scroll-behavior:smooth}
-    body{font-family:"Inter",system-ui,sans-serif;background:var(--void);color:var(--text);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
-    .container{max-width:1100px;margin:0 auto;padding:0 24px}
-
-    /* SIGNAL BAR */
-    .signal-bar{position:fixed;top:0;left:0;right:0;height:2px;z-index:1000;background:var(--card);overflow:hidden}
-    .signal-bar::after{content:"";position:absolute;top:0;left:-40%;width:40%;height:100%;background:linear-gradient(90deg,transparent,var(--gold-hi),transparent);animation:scan 3s ease-in-out infinite}
-    @keyframes scan{0%{left:-40%}100%{left:140%}}
-
-    /* NAVBAR */
-    .navbar{position:sticky;top:2px;z-index:900;background:rgba(6,8,13,.88);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--card-border)}
-    .navbar .container{display:flex;align-items:center;justify-content:space-between;height:60px}
-    .logo{font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:700;letter-spacing:.04em;color:var(--white);text-transform:uppercase}
-    .logo span{color:var(--gold-hi)}
-    nav{display:flex;gap:32px}
-    nav a{font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);text-decoration:none;transition:color var(--transition)}
-    nav a:hover{color:var(--gold-hi)}
-
-    /* LANGUAGE SWITCHER */
-    .lang-switcher{display:flex;align-items:center;gap:2px;margin-left:24px;flex-shrink:0}
-    .lang-btn{padding:4px 10px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--card-border);background:transparent;color:var(--text-dim);cursor:pointer;transition:all var(--transition);border-radius:var(--radius);font-family:"Inter",system-ui,sans-serif}
-    .lang-btn:first-child{border-radius:var(--radius) 0 0 var(--radius);border-right:none}
-    .lang-btn:last-child{border-radius:0 var(--radius) var(--radius) 0}
-    .lang-btn.active{background:var(--gold-glow);border-color:var(--gold-dim);color:var(--gold-hi)}
-    .lang-btn:hover:not(.active){border-color:var(--gold-dim);color:var(--text)}
-    .navbar-right{display:flex;align-items:center}
-
-    /* HERO */
-    .hero{padding:120px 0 100px;position:relative;overflow:hidden}
-    .hero::before{content:"";position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(184,151,58,.07) 0%,transparent 70%);pointer-events:none}
-    .hero-layout{display:grid;grid-template-columns:1fr 340px;gap:64px;align-items:center}
-    .hero-content{}
-    .eyebrow{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-    .hero h1{font-family:"Barlow Condensed",sans-serif;font-size:clamp(52px,7vw,88px);font-weight:700;line-height:.95;letter-spacing:-.01em;color:var(--white);text-transform:uppercase;margin-bottom:8px}
-    .hero h1 span{color:var(--gold-hi)}
-    .hero-subtitle{font-family:"Barlow Condensed",sans-serif;font-size:clamp(16px,2.5vw,24px);font-weight:300;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);margin-bottom:28px}
-    .hero-desc{max-width:520px;font-size:15.5px;color:var(--text-dim);line-height:1.7;margin-bottom:36px}
-    .hero-cta-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:48px}
-    .button{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--gold);color:#08090C;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius);transition:background var(--transition),transform var(--transition)}
-    .button:hover{background:var(--gold-hi);transform:translateY(-1px)}
-    .button-ghost{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;background:transparent;border:1px solid var(--card-border);color:var(--text);font-size:13px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-radius:var(--radius);transition:border-color var(--transition),color var(--transition)}
-    .button-ghost:hover{border-color:var(--gold-dim);color:var(--gold-hi)}
-    .hero-badges{display:flex;flex-wrap:wrap;gap:10px}
-    .badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:var(--card);border:1px solid var(--card-border);border-radius:100px;font-size:11.5px;font-weight:500;color:var(--text-dim);letter-spacing:.04em}
-    .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
-
-    /* HERO PANEL */
-    .hero-panel{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);overflow:hidden;flex-shrink:0}
-    .hero-panel-header{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#0A0C12;border-bottom:1px solid var(--card-border)}
-    .hero-panel-dot{width:8px;height:8px;border-radius:50%;background:var(--card-border)}
-    .hero-panel-dot.active{background:#4ADE80;box-shadow:0 0 6px rgba(74,222,128,.5)}
-    .hero-panel-title{font-family:"Barlow Condensed",sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);margin-left:4px;flex:1}
-    .hero-panel-body{padding:20px 20px 16px}
-    .hero-panel-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-    .hero-panel-row:last-child{margin-bottom:0}
-    .hero-panel-key{font-size:11px;font-weight:500;letter-spacing:.04em;color:var(--text-dim);width:120px;flex-shrink:0}
-    .hero-panel-bar{flex:1;height:3px;background:var(--card-border);border-radius:2px;overflow:hidden}
-    .hero-panel-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold-hi));border-radius:2px;transition:width 1s ease}
-    .hero-panel-pct{font-family:"Barlow Condensed",sans-serif;font-size:12px;font-weight:600;color:var(--gold);width:32px;text-align:right;flex-shrink:0}
-    .hero-panel-footer{display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-top:1px solid var(--card-border);background:#0A0C12}
-    .hero-panel-status{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--text-dim);letter-spacing:.04em}
-    .hero-panel-version{font-family:"Barlow Condensed",sans-serif;font-size:11px;font-weight:600;color:var(--gold-dim);letter-spacing:.08em}
-
-    /* STATUS */
-    .status-section{padding:40px 0;background:var(--void)}
-    .status-card{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);overflow:hidden}
-    .status-card-header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;background:#0A0C12;border-bottom:1px solid var(--card-border)}
-    .status-card-label{font-family:"Barlow Condensed",sans-serif;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim)}
-    .status-card-tag{font-size:10.5px;font-weight:500;letter-spacing:.06em;color:var(--gold-dim);display:flex;align-items:center;gap:6px}
-    .status-card-tag::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--gold-dim);flex-shrink:0}
-    .status-inner{display:flex;align-items:stretch;overflow-x:auto;background:var(--card)}
-    .status-item{flex:1;min-width:160px;padding:20px 28px;border-right:1px solid var(--card-border);display:flex;flex-direction:column;gap:4px}
-    .status-item:last-child{border-right:none}
-    .status-label{font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-    .status-value{font-family:"Barlow Condensed",sans-serif;font-size:18px;font-weight:600;color:var(--white);letter-spacing:.02em}
-    .status-value.live{color:#4ADE80;display:flex;align-items:center;gap:8px}
-    .pulse{width:8px;height:8px;border-radius:50%;background:#4ADE80;position:relative;flex-shrink:0}
-    .pulse::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:1px solid #4ADE80;animation:ripple 2s ease-out infinite}
-    @keyframes ripple{0%{transform:scale(.6);opacity:1}100%{transform:scale(2.2);opacity:0}}
-
-    /* SECTIONS */
-    section{padding:96px 0}
-    .section-label{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
-    .section-title{font-family:"Barlow Condensed",sans-serif;font-size:clamp(32px,5vw,48px);font-weight:700;letter-spacing:-.01em;color:var(--white);text-transform:uppercase;line-height:1.05;margin-bottom:14px}
-    .section-sub{font-size:15px;color:var(--text-dim);max-width:540px;line-height:1.7;margin-bottom:56px}
-
-    /* WHY */
-    .why{background:var(--surface)}
-    .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--card-border);border:1px solid var(--card-border);border-radius:var(--radius-lg);overflow:hidden}
-    .feature-card{background:var(--card);padding:36px 32px;position:relative;transition:background var(--transition)}
-    .feature-card:hover{background:#141924}
-    .feature-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:transparent;transition:background var(--transition)}
-    .feature-card:hover::before{background:var(--gold)}
-    .feature-icon{width:40px;height:40px;border-radius:var(--radius);background:var(--gold-glow);border:1px solid rgba(184,151,58,.2);display:flex;align-items:center;justify-content:center;margin-bottom:20px;font-size:18px}
-    .feature-card h3{font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:600;color:var(--white);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
-    .feature-card p{font-size:13.5px;color:var(--text-dim);line-height:1.65}
-
-    /* ARCHITECTURE */
-    .architecture{background:var(--void)}
-    .arch-layout{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-    .arch-pipeline{display:flex;flex-direction:column}
-    .arch-step{display:flex;align-items:flex-start;gap:20px}
-    .arch-connector{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:32px}
-    .arch-node{width:32px;height:32px;border-radius:50%;border:2px solid var(--gold-dim);background:var(--card);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--gold);font-weight:600;font-family:"Barlow Condensed",sans-serif;flex-shrink:0;position:relative;z-index:1}
-    .arch-step.highlight .arch-node{border-color:var(--gold-hi);background:var(--gold-glow);color:var(--gold-hi)}
-    .arch-line{width:1px;flex:1;min-height:28px;background:linear-gradient(to bottom,var(--gold-dim),transparent)}
-    .arch-content{padding:4px 0 32px}
-    .arch-content h4{font-family:"Barlow Condensed",sans-serif;font-size:17px;font-weight:600;color:var(--white);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-    .arch-content p{font-size:13px;color:var(--text-dim);line-height:1.6}
-    .arch-aside{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);padding:36px}
-    .arch-aside h3{font-family:"Barlow Condensed",sans-serif;font-size:22px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.06em;margin-bottom:20px}
-    .arch-stat{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--card-border)}
-    .arch-stat:last-child{border-bottom:none}
-    .arch-stat-label{font-size:12.5px;color:var(--text-dim)}
-    .arch-stat-value{font-family:"Barlow Condensed",sans-serif;font-size:15px;font-weight:600;color:var(--gold-hi);letter-spacing:.04em}
-
-    /* FEATURES */
-    .features{background:var(--surface)}
-    .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-    .feat-item{display:flex;gap:16px;padding:24px;background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);transition:border-color var(--transition)}
-    .feat-item:hover{border-color:var(--gold-dim)}
-    .feat-num{font-family:"Barlow Condensed",sans-serif;font-size:13px;font-weight:700;color:var(--gold-dim);letter-spacing:.1em;flex-shrink:0;width:28px;padding-top:2px}
-    .feat-text h4{font-family:"Barlow Condensed",sans-serif;font-size:16px;font-weight:600;color:var(--white);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-    .feat-text p{font-size:13px;color:var(--text-dim);line-height:1.6}
-
-    /* HOW */
-    .how{background:var(--void)}
-    .how-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative}
-    .how-steps::before{content:"";position:absolute;top:28px;left:calc(12.5% + 16px);right:calc(12.5% + 16px);height:1px;background:linear-gradient(to right,var(--gold-dim),var(--gold),var(--gold-dim))}
-    .how-step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px}
-    .how-num{width:56px;height:56px;border-radius:50%;background:var(--card);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:700;color:var(--gold-hi);margin-bottom:20px;position:relative;z-index:1}
-    .how-step h3{font-family:"Barlow Condensed",sans-serif;font-size:20px;font-weight:700;color:var(--white);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
-    .how-step p{font-size:13px;color:var(--text-dim);line-height:1.6;max-width:180px}
-
-    /* PERFORMANCE */
-    .performance{background:var(--surface)}
-    .performance-header{margin-bottom:32px}
-    .report-frame{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius-lg);overflow:hidden}
-    .report-topbar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:#0A0C12;border-bottom:1px solid var(--card-border)}
-    .report-dot{width:10px;height:10px;border-radius:50%}
-    .report-dot.green{background:#30D158}
-    .report-dot.yellow{background:#FFD60A}
-    .report-dot.red{background:#FF453A}
-    .report-url{flex:1;font-size:11.5px;color:var(--text-dim);margin-left:8px;letter-spacing:.02em}
-    .report-live{font-size:11px;font-weight:600;color:#4ADE80;letter-spacing:.1em}
-    .report-body iframe{width:100%;height:700px;border:none;display:block}
-
-    /* ROADMAP */
-    .roadmap{background:var(--void)}
-    .roadmap-track{display:flex;align-items:flex-start;position:relative;margin-top:48px}
-    .roadmap-track::before{content:"";position:absolute;top:20px;left:10%;right:10%;height:1px;background:var(--card-border)}
-    .roadmap-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 8px}
-    .roadmap-node{width:40px;height:40px;border-radius:50%;background:var(--card);border:2px solid var(--card-border);display:flex;align-items:center;justify-content:center;margin-bottom:16px;position:relative;z-index:1}
-    .roadmap-step.done .roadmap-node{background:var(--gold-glow);border-color:var(--gold)}
-    .roadmap-step.active .roadmap-node{background:rgba(74,222,128,.1);border-color:#4ADE80}
-    .roadmap-node svg{width:16px;height:16px}
-    .roadmap-label{font-family:"Barlow Condensed",sans-serif;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-    .roadmap-step.done .roadmap-label{color:var(--gold)}
-    .roadmap-step.active .roadmap-label{color:#4ADE80}
-
-    /* RISK */
-    .risk-disclosure{background:var(--void);border-top:1px solid var(--card-border);padding:40px 0}
-    .risk-inner{background:var(--card);border:1px solid var(--card-border);border-radius:var(--radius);padding:28px 32px;display:flex;gap:20px;align-items:flex-start}
-    .risk-icon{font-size:18px;flex-shrink:0;margin-top:2px}
-    .risk-inner h4{font-family:"Barlow Condensed",sans-serif;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:8px}
-    .risk-inner p{font-size:12px;color:var(--muted);line-height:1.65}
-
-    /* FOOTER */
-    footer{background:#040508;border-top:1px solid var(--card-border);padding:40px 0}
-    .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
-    footer h3{font-family:"Barlow Condensed",sans-serif;font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--white)}
-    footer h3 span{color:var(--gold-hi)}
-    footer p{font-size:12px;color:var(--muted);margin-top:4px}
-    .footer-meta{text-align:right;font-size:11.5px;color:var(--muted);line-height:1.8}
-
-    /* RESPONSIVE */
-    @media(max-width:1024px){.hero-layout{grid-template-columns:1fr;gap:48px}.hero-panel{max-width:400px}}
-    @media(max-width:900px){.arch-layout{grid-template-columns:1fr;gap:40px}.how-steps{grid-template-columns:repeat(2,1fr);gap:32px}.how-steps::before{display:none}}
-    @media(max-width:640px){
-      .hero{padding:80px 0 64px}
-      .hero-panel{display:none}
-      nav{gap:16px}
-      .lang-switcher{margin-left:12px}
-      .how-steps{grid-template-columns:1fr 1fr}
-      .status-section{padding:24px 0}
-      .status-card-tag{display:none}
-      .status-inner{flex-direction:column}
-      .status-item{border-right:none;border-bottom:1px solid var(--card-border)}
-      .status-item:last-child{border-bottom:none}
-      .roadmap-track{flex-direction:column;align-items:flex-start;gap:24px}
-      .roadmap-track::before{display:none}
-      .roadmap-step{flex-direction:row;text-align:left;gap:16px}
-      .roadmap-node{margin-bottom:0;flex-shrink:0}
-      .footer-inner{flex-direction:column}
-      .footer-meta{text-align:left}
-    }
-    @media(max-width:480px){
-      nav{gap:10px}
-      nav a{font-size:10px}
-      .lang-btn{padding:3px 7px;font-size:10px}
-    }
-    @media(prefers-reduced-motion:reduce){.signal-bar::after,.pulse::after{animation:none}}
-  </style>
 </head>
 <body>
 
@@ -235,10 +25,10 @@
     <div class="logo">QuantumApex <span>AI</span></div>
     <div class="navbar-right">
       <nav>
-        <a href="#home"    data-en="Home"        data-id="Beranda">Home</a>
-        <a href="#why"     data-en="Technology"  data-id="Teknologi">Technology</a>
+        <a href="#home"        data-en="Home"        data-id="Beranda">Home</a>
+        <a href="#why"         data-en="Technology"  data-id="Teknologi">Technology</a>
         <a href="#performance" data-en="Performance" data-id="Performa">Performance</a>
-        <a href="#roadmap" data-en="Roadmap"     data-id="Peta Jalan">Roadmap</a>
+        <a href="#roadmap"     data-en="Roadmap"     data-id="Peta Jalan">Roadmap</a>
       </nav>
       <div class="lang-switcher" role="group" aria-label="Language selector">
         <button class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
@@ -250,68 +40,31 @@
 
 <section id="home" class="hero">
   <div class="container">
-    <div class="hero-layout">
-      <div class="hero-content">
-        <p class="eyebrow"
-           data-en="Institutional AI Trading Engine"
-           data-id="Mesin Trading AI Institusional">Institutional AI Trading Engine</p>
-        <h1>QuantumApex <span>AI</span></h1>
-        <p class="hero-subtitle"
-           data-en="Advanced Algorithmic Trading System for MetaTrader 5"
-           data-id="Sistem Trading Algoritmik Canggih untuk MetaTrader 5">Advanced Algorithmic Trading System for MetaTrader 5</p>
-        <p class="hero-desc"
-           data-en="An Expert Advisor built around adaptive intelligence — processing market data through multi-layer signal validation, autonomous risk management, and a continuous learning feedback loop designed for professional XAUUSD trading."
-           data-id="Expert Advisor yang dibangun di atas kecerdasan adaptif — memproses data pasar melalui validasi sinyal berlapis, manajemen risiko otonom, dan siklus pembelajaran berkelanjutan yang dirancang untuk trading XAUUSD profesional.">An Expert Advisor built around adaptive intelligence — processing market data through multi-layer signal validation, autonomous risk management, and a continuous learning feedback loop designed for professional XAUUSD trading.</p>
-        <div class="hero-cta-row">
-          <a href="#performance" class="button"
-             data-en="View Live Performance"
-             data-id="Lihat Performa Live">View Live Performance</a>
-          <a href="#why" class="button-ghost"
-             data-en="Explore Technology"
-             data-id="Jelajahi Teknologi">Explore Technology</a>
-        </div>
-        <div class="hero-badges">
-          <span class="badge"><span class="dot"></span><span data-en="AI Adaptive Learning"            data-id="Pembelajaran AI Adaptif">AI Adaptive Learning</span></span>
-          <span class="badge"><span class="dot"></span><span data-en="MetaTrader 5 Expert Advisor"     data-id="Expert Advisor MetaTrader 5">MetaTrader 5 Expert Advisor</span></span>
-          <span class="badge"><span class="dot"></span><span data-en="Multi-Layer Signal Validation"   data-id="Validasi Sinyal Berlapis">Multi-Layer Signal Validation</span></span>
-          <span class="badge"><span class="dot"></span><span data-en="Risk Management Framework"       data-id="Kerangka Manajemen Risiko">Risk Management Framework</span></span>
-          <span class="badge"><span class="dot"></span><span data-en="XAUUSD Specialised"              data-id="Khusus XAUUSD">XAUUSD Specialised</span></span>
-        </div>
+    <div class="hero-content">
+      <p class="eyebrow"
+         data-en="Institutional AI Trading Engine"
+         data-id="Mesin Trading AI Institusional">Institutional AI Trading Engine</p>
+      <h1>QuantumApex <span>AI</span></h1>
+      <p class="hero-subtitle"
+         data-en="Advanced Algorithmic Trading System for MetaTrader 5"
+         data-id="Sistem Trading Algoritmik Canggih untuk MetaTrader 5">Advanced Algorithmic Trading System for MetaTrader 5</p>
+      <p class="hero-desc"
+         data-en="An Expert Advisor built around adaptive intelligence — processing market data through multi-layer signal validation, autonomous risk management, and a continuous learning feedback loop designed for professional XAUUSD trading."
+         data-id="Expert Advisor yang dibangun di atas kecerdasan adaptif — memproses data pasar melalui validasi sinyal berlapis, manajemen risiko otonom, dan siklus pembelajaran berkelanjutan yang dirancang untuk trading XAUUSD profesional.">An Expert Advisor built around adaptive intelligence — processing market data through multi-layer signal validation, autonomous risk management, and a continuous learning feedback loop designed for professional XAUUSD trading.</p>
+      <div class="hero-cta-row">
+        <a href="#performance" class="button"
+           data-en="View Live Performance"
+           data-id="Lihat Performa Live">View Live Performance</a>
+        <a href="#why" class="button-ghost"
+           data-en="Explore Technology"
+           data-id="Jelajahi Teknologi">Explore Technology</a>
       </div>
-      <div class="hero-panel" aria-hidden="true">
-        <div class="hero-panel-header">
-          <span class="hero-panel-dot active"></span>
-          <span class="hero-panel-title" data-en="AI SYSTEM CORE" data-id="INTI SISTEM AI">AI SYSTEM CORE</span>
-        </div>
-        <div class="hero-panel-body">
-          <div class="hero-panel-row">
-            <span class="hero-panel-key" data-en="Neural Processing" data-id="Pemrosesan Neural">Neural Processing</span>
-            <span class="hero-panel-bar"><span class="hero-panel-fill" style="width:92%"></span></span>
-            <span class="hero-panel-pct">92%</span>
-          </div>
-          <div class="hero-panel-row">
-            <span class="hero-panel-key" data-en="Signal Validation" data-id="Validasi Sinyal">Signal Validation</span>
-            <span class="hero-panel-bar"><span class="hero-panel-fill" style="width:88%"></span></span>
-            <span class="hero-panel-pct">88%</span>
-          </div>
-          <div class="hero-panel-row">
-            <span class="hero-panel-key" data-en="Risk Engine" data-id="Mesin Risiko">Risk Engine</span>
-            <span class="hero-panel-bar"><span class="hero-panel-fill" style="width:97%"></span></span>
-            <span class="hero-panel-pct">97%</span>
-          </div>
-          <div class="hero-panel-row">
-            <span class="hero-panel-key" data-en="Live Monitoring" data-id="Pemantauan Live">Live Monitoring</span>
-            <span class="hero-panel-bar"><span class="hero-panel-fill" style="width:100%"></span></span>
-            <span class="hero-panel-pct">100%</span>
-          </div>
-        </div>
-        <div class="hero-panel-footer">
-          <span class="hero-panel-status">
-            <span class="pulse" style="width:6px;height:6px"></span>
-            <span data-en="All systems operational" data-id="Semua sistem beroperasi">All systems operational</span>
-          </span>
-          <span class="hero-panel-version">QAM v15.04.02</span>
-        </div>
+      <div class="hero-badges">
+        <span class="badge"><span class="dot"></span><span data-en="AI Adaptive Learning"           data-id="Pembelajaran AI Adaptif">AI Adaptive Learning</span></span>
+        <span class="badge"><span class="dot"></span><span data-en="MetaTrader 5 Expert Advisor"    data-id="Expert Advisor MetaTrader 5">MetaTrader 5 Expert Advisor</span></span>
+        <span class="badge"><span class="dot"></span><span data-en="Multi-Layer Signal Validation"  data-id="Validasi Sinyal Berlapis">Multi-Layer Signal Validation</span></span>
+        <span class="badge"><span class="dot"></span><span data-en="Risk Management Framework"      data-id="Kerangka Manajemen Risiko">Risk Management Framework</span></span>
+        <span class="badge"><span class="dot"></span><span data-en="XAUUSD Specialised"             data-id="Khusus XAUUSD">XAUUSD Specialised</span></span>
       </div>
     </div>
   </div>
@@ -398,7 +151,7 @@
         <div class="arch-step">
           <div class="arch-connector"><div class="arch-node">1</div><div class="arch-line"></div></div>
           <div class="arch-content">
-            <h4 data-en="Market Data Ingestion"    data-id="Pengambilan Data Pasar">Market Data Ingestion</h4>
+            <h4 data-en="Market Data Ingestion"  data-id="Pengambilan Data Pasar">Market Data Ingestion</h4>
             <p  data-en="Real-time price feeds, volume, and volatility metrics from the MT5 data stream are normalised and prepared for analysis."
                 data-id="Feed harga real-time, volume, dan metrik volatilitas dari aliran data MT5 dinormalisasi dan disiapkan untuk analisis.">Real-time price feeds, volume, and volatility metrics from the MT5 data stream are normalised and prepared for analysis.</p>
           </div>
@@ -406,7 +159,7 @@
         <div class="arch-step highlight">
           <div class="arch-connector"><div class="arch-node">2</div><div class="arch-line"></div></div>
           <div class="arch-content">
-            <h4 data-en="AI Analysis Layer"        data-id="Lapisan Analisis AI">AI Analysis Layer</h4>
+            <h4 data-en="AI Analysis Layer"      data-id="Lapisan Analisis AI">AI Analysis Layer</h4>
             <p  data-en="Neural network processing evaluates pattern structures, regime states, and directional probability across multiple timeframes."
                 data-id="Pemrosesan jaringan saraf mengevaluasi struktur pola, kondisi regime, dan probabilitas arah di berbagai kerangka waktu.">Neural network processing evaluates pattern structures, regime states, and directional probability across multiple timeframes.</p>
           </div>
@@ -414,7 +167,7 @@
         <div class="arch-step">
           <div class="arch-connector"><div class="arch-node">3</div><div class="arch-line"></div></div>
           <div class="arch-content">
-            <h4 data-en="Signal Validation"        data-id="Validasi Sinyal">Signal Validation</h4>
+            <h4 data-en="Signal Validation"      data-id="Validasi Sinyal">Signal Validation</h4>
             <p  data-en="Independent confirmation logic gates the signal. Ambiguous or low-confidence outputs are suppressed before reaching execution."
                 data-id="Logika konfirmasi independen menjaga sinyal. Output yang ambigu atau berkeyakinan rendah ditekan sebelum mencapai eksekusi.">Independent confirmation logic gates the signal. Ambiguous or low-confidence outputs are suppressed before reaching execution.</p>
           </div>
@@ -422,7 +175,7 @@
         <div class="arch-step">
           <div class="arch-connector"><div class="arch-node">4</div><div class="arch-line"></div></div>
           <div class="arch-content">
-            <h4 data-en="Risk Assessment"          data-id="Penilaian Risiko">Risk Assessment</h4>
+            <h4 data-en="Risk Assessment"        data-id="Penilaian Risiko">Risk Assessment</h4>
             <p  data-en="Position size, stop parameters, and maximum exposure are computed relative to current equity and live volatility conditions."
                 data-id="Ukuran posisi, parameter stop, dan eksposur maksimum dihitung relatif terhadap ekuitas saat ini dan kondisi volatilitas live.">Position size, stop parameters, and maximum exposure are computed relative to current equity and live volatility conditions.</p>
           </div>
@@ -430,7 +183,7 @@
         <div class="arch-step highlight">
           <div class="arch-connector"><div class="arch-node">5</div><div class="arch-line"></div></div>
           <div class="arch-content">
-            <h4 data-en="Execution Engine"         data-id="Mesin Eksekusi">Execution Engine</h4>
+            <h4 data-en="Execution Engine"       data-id="Mesin Eksekusi">Execution Engine</h4>
             <p  data-en="Validated orders are placed via the MT5 API with sub-second latency. Trade management and exit logic run autonomously."
                 data-id="Order yang telah divalidasi ditempatkan melalui API MT5 dengan latensi di bawah satu detik. Manajemen trade dan logika keluar berjalan secara otonom.">Validated orders are placed via the MT5 API with sub-second latency. Trade management and exit logic run autonomously.</p>
           </div>
@@ -438,7 +191,7 @@
         <div class="arch-step">
           <div class="arch-connector"><div class="arch-node">6</div></div>
           <div class="arch-content" style="padding-bottom:0">
-            <h4 data-en="Performance Learning"     data-id="Pembelajaran Performa">Performance Learning</h4>
+            <h4 data-en="Performance Learning"   data-id="Pembelajaran Performa">Performance Learning</h4>
             <p  data-en="Execution results feed back into the AI model, updating signal weights and calibrating risk parameters for subsequent decisions."
                 data-id="Hasil eksekusi diumpankan kembali ke model AI, memperbarui bobot sinyal dan mengkalibrasi parameter risiko untuk keputusan berikutnya.">Execution results feed back into the AI model, updating signal weights and calibrating risk parameters for subsequent decisions.</p>
           </div>
@@ -446,14 +199,14 @@
       </div>
       <div class="arch-aside">
         <h3 data-en="System Specifications" data-id="Spesifikasi Sistem">System Specifications</h3>
-        <div class="arch-stat"><span class="arch-stat-label" data-en="Platform"       data-id="Platform">Platform</span>         <span class="arch-stat-value">MetaTrader 5</span></div>
-        <div class="arch-stat"><span class="arch-stat-label" data-en="Language"       data-id="Bahasa">Language</span>         <span class="arch-stat-value">MQL5 Native</span></div>
-        <div class="arch-stat"><span class="arch-stat-label" data-en="Instrument"     data-id="Instrumen">Instrument</span>       <span class="arch-stat-value">XAUUSD</span></div>
-        <div class="arch-stat"><span class="arch-stat-label" data-en="Execution Type" data-id="Jenis Eksekusi">Execution Type</span>  <span class="arch-stat-value" data-en="Fully Automated" data-id="Otomatis Penuh">Fully Automated</span></div>
-        <div class="arch-stat"><span class="arch-stat-label" data-en="Signal Layers"  data-id="Lapisan Sinyal">Signal Layers</span>   <span class="arch-stat-value" data-en="Multi-Layer"      data-id="Berlapis">Multi-Layer</span></div>
-        <div class="arch-stat"><span class="arch-stat-label" data-en="Risk Model"     data-id="Model Risiko">Risk Model</span>      <span class="arch-stat-value" data-en="Dynamic / Adaptive" data-id="Dinamis / Adaptif">Dynamic / Adaptive</span></div>
-        <div class="arch-stat"><span class="arch-stat-label" data-en="Learning Mode"  data-id="Mode Pembelajaran">Learning Mode</span>   <span class="arch-stat-value" data-en="Continuous Feedback" data-id="Umpan Balik Berkelanjutan">Continuous Feedback</span></div>
-        <div class="arch-stat"><span class="arch-stat-label" data-en="Protection"     data-id="Perlindungan">Protection</span>      <span class="arch-stat-value" data-en="License Secured" data-id="Terlindungi Lisensi">License Secured</span></div>
+        <div class="arch-stat"><span class="arch-stat-label" data-en="Platform"       data-id="Platform">Platform</span>        <span class="arch-stat-value">MetaTrader 5</span></div>
+        <div class="arch-stat"><span class="arch-stat-label" data-en="Language"       data-id="Bahasa">Language</span>        <span class="arch-stat-value">MQL5 Native</span></div>
+        <div class="arch-stat"><span class="arch-stat-label" data-en="Instrument"     data-id="Instrumen">Instrument</span>      <span class="arch-stat-value">XAUUSD</span></div>
+        <div class="arch-stat"><span class="arch-stat-label" data-en="Execution Type" data-id="Jenis Eksekusi">Execution Type</span> <span class="arch-stat-value" data-en="Fully Automated"    data-id="Otomatis Penuh">Fully Automated</span></div>
+        <div class="arch-stat"><span class="arch-stat-label" data-en="Signal Layers"  data-id="Lapisan Sinyal">Signal Layers</span>  <span class="arch-stat-value" data-en="Multi-Layer"        data-id="Berlapis">Multi-Layer</span></div>
+        <div class="arch-stat"><span class="arch-stat-label" data-en="Risk Model"     data-id="Model Risiko">Risk Model</span>     <span class="arch-stat-value" data-en="Dynamic / Adaptive" data-id="Dinamis / Adaptif">Dynamic / Adaptive</span></div>
+        <div class="arch-stat"><span class="arch-stat-label" data-en="Learning Mode"  data-id="Mode Pembelajaran">Learning Mode</span>  <span class="arch-stat-value" data-en="Continuous Feedback" data-id="Umpan Balik Berkelanjutan">Continuous Feedback</span></div>
+        <div class="arch-stat"><span class="arch-stat-label" data-en="Protection"     data-id="Perlindungan">Protection</span>     <span class="arch-stat-value" data-en="License Secured"     data-id="Terlindungi Lisensi">License Secured</span></div>
       </div>
     </div>
   </div>
@@ -461,7 +214,7 @@
 
 <section class="features">
   <div class="container">
-    <p class="section-label" data-en="Feature Set"       data-id="Fitur Unggulan">Feature Set</p>
+    <p class="section-label" data-en="Feature Set"      data-id="Fitur Unggulan">Feature Set</p>
     <h2 class="section-title" data-en="Core Capabilities" data-id="Kemampuan Inti">Core Capabilities</h2>
     <p class="section-sub"
        data-en="Every component serves a functional role in the execution pipeline — from pattern recognition through to performance attribution."
@@ -470,7 +223,7 @@
       <div class="feat-item">
         <span class="feat-num">01</span>
         <div class="feat-text">
-          <h4 data-en="Neural Network Processing"    data-id="Pemrosesan Jaringan Saraf">Neural Network Processing</h4>
+          <h4 data-en="Neural Network Processing"  data-id="Pemrosesan Jaringan Saraf">Neural Network Processing</h4>
           <p  data-en="Layered neural architecture trained to identify high-probability price pattern structures within XAUUSD market data."
               data-id="Arsitektur jaringan saraf berlapis yang dilatih untuk mengidentifikasi struktur pola harga berpeluang tinggi dalam data pasar XAUUSD.">Layered neural architecture trained to identify high-probability price pattern structures within XAUUSD market data.</p>
         </div>
@@ -478,7 +231,7 @@
       <div class="feat-item">
         <span class="feat-num">02</span>
         <div class="feat-text">
-          <h4 data-en="Market Regime Detection"      data-id="Deteksi Regime Pasar">Market Regime Detection</h4>
+          <h4 data-en="Market Regime Detection"    data-id="Deteksi Regime Pasar">Market Regime Detection</h4>
           <p  data-en="Classifies the current market environment — trending, ranging, or transitional — and adjusts signal sensitivity accordingly."
               data-id="Mengklasifikasikan lingkungan pasar saat ini — trending, ranging, atau transisional — dan menyesuaikan sensitivitas sinyal secara otomatis.">Classifies the current market environment &mdash; trending, ranging, or transitional &mdash; and adjusts signal sensitivity accordingly.</p>
         </div>
@@ -486,7 +239,7 @@
       <div class="feat-item">
         <span class="feat-num">03</span>
         <div class="feat-text">
-          <h4 data-en="Volatility Analysis"          data-id="Analisis Volatilitas">Volatility Analysis</h4>
+          <h4 data-en="Volatility Analysis"        data-id="Analisis Volatilitas">Volatility Analysis</h4>
           <p  data-en="Real-time volatility modelling informs position sizing and stop placement, keeping risk exposure consistent across varying conditions."
               data-id="Pemodelan volatilitas real-time menginformasikan ukuran posisi dan penempatan stop, menjaga eksposur risiko tetap konsisten di berbagai kondisi.">Real-time volatility modelling informs position sizing and stop placement, keeping risk exposure consistent across varying conditions.</p>
         </div>
@@ -494,7 +247,7 @@
       <div class="feat-item">
         <span class="feat-num">04</span>
         <div class="feat-text">
-          <h4 data-en="Trade Monitoring"             data-id="Pemantauan Trading">Trade Monitoring</h4>
+          <h4 data-en="Trade Monitoring"           data-id="Pemantauan Trading">Trade Monitoring</h4>
           <p  data-en="Open positions are actively managed post-entry. Stop and target adjustments occur autonomously based on live price behaviour."
               data-id="Posisi terbuka dikelola secara aktif setelah masuk pasar. Penyesuaian stop dan target dilakukan secara otonom berdasarkan pergerakan harga live.">Open positions are actively managed post-entry. Stop and target adjustments occur autonomously based on live price behaviour.</p>
         </div>
@@ -502,7 +255,7 @@
       <div class="feat-item">
         <span class="feat-num">05</span>
         <div class="feat-text">
-          <h4 data-en="Performance Analytics"        data-id="Analitik Performa">Performance Analytics</h4>
+          <h4 data-en="Performance Analytics"      data-id="Analitik Performa">Performance Analytics</h4>
           <p  data-en="Detailed trade-level records feed into automated performance reports — updated continuously and available for independent review."
               data-id="Catatan tingkat trade yang terperinci dimasukkan ke dalam laporan performa otomatis — diperbarui secara berkelanjutan dan tersedia untuk tinjauan independen.">Detailed trade-level records feed into automated performance reports &mdash; updated continuously and available for independent review.</p>
         </div>
@@ -510,7 +263,7 @@
       <div class="feat-item">
         <span class="feat-num">06</span>
         <div class="feat-text">
-          <h4 data-en="License Protection"           data-id="Perlindungan Lisensi">License Protection</h4>
+          <h4 data-en="License Protection"         data-id="Perlindungan Lisensi">License Protection</h4>
           <p  data-en="Integrated license verification ensures the EA operates only within authorised environments, protecting system integrity and IP."
               data-id="Verifikasi lisensi terintegrasi memastikan EA hanya beroperasi dalam lingkungan yang diotorisasi, melindungi integritas sistem dan kekayaan intelektual.">Integrated license verification ensures the EA operates only within authorised environments, protecting system integrity and IP.</p>
         </div>
