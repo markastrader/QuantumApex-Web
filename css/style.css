@@ -2,7 +2,7 @@
    QuantumApex AI — style.css
    Synchronised with index.html structure
    Theme: Dark institutional / Quantitative finance
-   v1.2 — Professional UI refinement
+   v1.1 — Added language switcher styles
    ========================================= */
 
 /* ================= RESET & ROOT ================= */
@@ -45,9 +45,9 @@ body {
 }
 
 .container {
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 32px;
 }
 
 
@@ -164,26 +164,31 @@ nav a:hover {
   line-height: 1;
 }
 
+/* Left button rounded left corners only */
 .lang-btn:first-child {
   border-radius: var(--radius) 0 0 var(--radius);
   border-right: none;
 }
 
+/* Right button rounded right corners only */
 .lang-btn:last-child {
   border-radius: 0 var(--radius) var(--radius) 0;
 }
 
+/* Active / selected state */
 .lang-btn.active {
   background: var(--gold-glow);
   border-color: var(--gold-dim);
   color: var(--gold-hi);
 }
 
+/* Hover on inactive */
 .lang-btn:hover:not(.active) {
   border-color: var(--gold-dim);
   color: var(--text);
 }
 
+/* Remove default focus outline; keep accessible ring */
 .lang-btn:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
@@ -192,9 +197,8 @@ nav a:hover {
 
 /* ================= HERO ================= */
 
-/* Reduced from 120px → 90px top, single-column (panel removed) */
 .hero {
-  padding: 90px 0 80px;
+  padding: 120px 0 100px;
   position: relative;
   overflow: hidden;
 }
@@ -211,9 +215,128 @@ nav a:hover {
   pointer-events: none;
 }
 
-/* Single-column hero — no more two-column panel layout */
-.hero-content {
-  max-width: 720px;
+/* Two-column hero layout */
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 72px;
+  align-items: center;
+}
+
+/* AI System Core panel */
+.hero-panel {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.hero-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #0A0C12;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.hero-panel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--card-border);
+}
+
+.hero-panel-dot.active {
+  background: #4ADE80;
+  box-shadow: 0 0 6px rgba(74, 222, 128, .5);
+}
+
+.hero-panel-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-left: 4px;
+  flex: 1;
+}
+
+.hero-panel-body {
+  padding: 20px 20px 16px;
+}
+
+.hero-panel-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.hero-panel-row:last-child {
+  margin-bottom: 0;
+}
+
+.hero-panel-key {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--text-dim);
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.hero-panel-bar {
+  flex: 1;
+  height: 3px;
+  background: var(--card-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.hero-panel-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-hi));
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+.hero-panel-pct {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.hero-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-top: 1px solid var(--card-border);
+  background: #0A0C12;
+}
+
+.hero-panel-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--text-dim);
+  letter-spacing: .04em;
+}
+
+.hero-panel-version {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold-dim);
+  letter-spacing: .08em;
 }
 
 .eyebrow {
@@ -251,7 +374,7 @@ nav a:hover {
 }
 
 .hero-desc {
-  max-width: 600px;
+  max-width: 780px;
   font-size: 16px;
   color: var(--text-dim);
   line-height: 1.7;
@@ -263,7 +386,7 @@ nav a:hover {
   align-items: center;
   gap: 20px;
   flex-wrap: wrap;
-  margin-bottom: 44px;
+  margin-bottom: 48px;
 }
 
 .button {
@@ -315,6 +438,12 @@ nav a:hover {
   gap: 10px;
 }
 
+@media (min-width: 1200px) {
+  .hero-badges {
+    flex-wrap: nowrap;
+  }
+}
+
 .badge {
   display: inline-flex;
   align-items: center;
@@ -340,9 +469,8 @@ nav a:hover {
 
 /* ================= STATUS CARD ================= */
 
-/* Refined: tighter padding, compact monitoring widget feel */
 .status-section {
-  padding: 32px 0;
+  padding: 40px 0;
   background: var(--void);
 }
 
@@ -357,7 +485,7 @@ nav a:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 20px;
+  padding: 12px 20px;
   background: #0A0C12;
   border-bottom: 1px solid var(--card-border);
 }
@@ -397,11 +525,10 @@ nav a:hover {
   background: var(--card);
 }
 
-/* Reduced padding for a tighter widget look */
 .status-item {
   flex: 1;
-  min-width: 150px;
-  padding: 16px 24px;
+  min-width: 160px;
+  padding: 20px 28px;
   border-right: 1px solid var(--card-border);
   display: flex;
   flex-direction: column;
@@ -422,7 +549,7 @@ nav a:hover {
 
 .status-value {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 600;
   color: var(--white);
   letter-spacing: .02em;
@@ -461,9 +588,8 @@ nav a:hover {
 
 /* ================= SHARED SECTION UTILITIES ================= */
 
-/* Reduced from 96px → 80px for tighter density */
 section {
-  padding: 80px 0;
+  padding: 96px 0;
 }
 
 .section-label {
@@ -472,7 +598,7 @@ section {
   letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--gold);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .section-title {
@@ -486,13 +612,12 @@ section {
   margin-bottom: 14px;
 }
 
-/* Widened from 540px → 740px to prevent awkward line breaks */
 .section-sub {
   font-size: 15px;
   color: var(--text-dim);
-  max-width: 740px;
+  max-width: 540px;
   line-height: 1.7;
-  margin-bottom: 48px;
+  margin-bottom: 56px;
 }
 
 
@@ -512,14 +637,11 @@ section {
   overflow: hidden;
 }
 
-/* Consistent card padding for even heights */
 .feature-card {
   background: var(--card);
-  padding: 32px 28px;
+  padding: 36px 32px;
   position: relative;
   transition: background var(--transition);
-  display: flex;
-  flex-direction: column;
 }
 
 .feature-card:hover {
@@ -550,9 +672,8 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   font-size: 18px;
-  flex-shrink: 0;
 }
 
 .feature-card h3 {
@@ -581,8 +702,8 @@ section {
 .arch-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 56px;
-  align-items: start;
+  gap: 64px;
+  align-items: center;
 }
 
 .arch-pipeline {
@@ -631,13 +752,12 @@ section {
 .arch-line {
   width: 1px;
   flex: 1;
-  min-height: 20px;
+  min-height: 28px;
   background: linear-gradient(to bottom, var(--gold-dim), transparent);
 }
 
-/* Tighter pipeline steps */
 .arch-content {
-  padding: 4px 0 24px;
+  padding: 4px 0 32px;
 }
 
 .arch-content h4 {
@@ -660,26 +780,24 @@ section {
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
-  padding: 28px 32px;
-  position: sticky;
-  top: 80px;
+  padding: 36px;
 }
 
 .arch-aside h3 {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: var(--white);
   text-transform: uppercase;
   letter-spacing: .06em;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
 .arch-stat {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
+  padding: 14px 0;
   border-bottom: 1px solid var(--card-border);
 }
 
@@ -694,7 +812,7 @@ section {
 
 .arch-stat-value {
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   color: var(--gold-hi);
   letter-spacing: .04em;
@@ -710,19 +828,17 @@ section {
 .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 14px;
+  gap: 16px;
 }
 
-/* Aligned flex column for consistent card heights */
 .feat-item {
   display: flex;
   gap: 16px;
-  padding: 22px 24px;
+  padding: 24px;
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   transition: border-color var(--transition);
-  align-items: flex-start;
 }
 
 .feat-item:hover {
@@ -747,7 +863,7 @@ section {
   color: var(--white);
   text-transform: uppercase;
   letter-spacing: .06em;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 .feat-text p {
@@ -831,7 +947,7 @@ section {
 }
 
 .performance-header {
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .report-frame {
@@ -893,7 +1009,7 @@ section {
   display: flex;
   align-items: flex-start;
   position: relative;
-  margin-top: 40px;
+  margin-top: 48px;
 }
 
 .roadmap-track::before {
@@ -924,7 +1040,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   position: relative;
   z-index: 1;
 }
@@ -967,14 +1083,14 @@ section {
 .risk-disclosure {
   background: var(--void);
   border-top: 1px solid var(--card-border);
-  padding: 36px 0;
+  padding: 40px 0;
 }
 
 .risk-inner {
   background: var(--card);
   border: 1px solid var(--card-border);
   border-radius: var(--radius);
-  padding: 24px 28px;
+  padding: 28px 32px;
   display: flex;
   gap: 20px;
   align-items: flex-start;
@@ -1008,7 +1124,7 @@ section {
 footer {
   background: #040508;
   border-top: 1px solid var(--card-border);
-  padding: 36px 0;
+  padding: 40px 0;
 }
 
 .footer-inner {
@@ -1059,8 +1175,13 @@ footer p {
 /* ================= RESPONSIVE — WIDE TABLET (≤1024px) ================= */
 
 @media (max-width: 1024px) {
-  .arch-aside {
-    position: static;
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .hero-panel {
+    max-width: 400px;
   }
 }
 
@@ -1081,10 +1202,6 @@ footer p {
   .how-steps::before {
     display: none;
   }
-
-  .section-sub {
-    max-width: 100%;
-  }
 }
 
 
@@ -1092,11 +1209,12 @@ footer p {
 
 @media (max-width: 640px) {
   .hero {
-    padding: 72px 0 56px;
+    padding: 80px 0 64px;
   }
 
-  .hero-content {
-    max-width: 100%;
+  /* Hide panel on small screens — text + badges carry the hero */
+  .hero-panel {
+    display: none;
   }
 
   nav {
@@ -1113,7 +1231,7 @@ footer p {
 
   /* Status card: tighter on mobile */
   .status-section {
-    padding: 20px 0;
+    padding: 24px 0;
   }
 
   .status-card-tag {
@@ -1128,7 +1246,6 @@ footer p {
   .status-item {
     border-right: none;
     border-bottom: 1px solid var(--card-border);
-    padding: 14px 20px;
   }
 
   .status-item:last-child {
@@ -1169,11 +1286,6 @@ footer p {
   /* Performance iframe shorter on mobile */
   .report-body iframe {
     height: 520px;
-  }
-
-  /* Section padding tighter on mobile */
-  section {
-    padding: 60px 0;
   }
 }
 
