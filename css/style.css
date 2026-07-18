@@ -677,6 +677,17 @@ section {
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   padding: 36px;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.arch-aside-stats {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  margin-top: 20px;
 }
 
 .arch-aside h3 {
@@ -693,8 +704,10 @@ section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 0;
+  padding: 0;
+  flex: 1;
   border-bottom: 1px solid var(--card-border);
+  min-height: 44px;
 }
 
 .arch-stat:last-child {
