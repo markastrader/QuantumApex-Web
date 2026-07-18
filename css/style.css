@@ -1107,7 +1107,24 @@ footer p {
   list-style: none;
   display: flex;
   align-items: center;
-  gap: 24px;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+}
+
+.footer-contact ul li {
+  display: flex;
+  align-items: center;
+}
+
+.footer-contact ul li + li::before {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background: var(--card-border);
+  margin: 0 20px;
+  flex-shrink: 0;
 }
 
 .footer-contact a {
@@ -1501,10 +1518,15 @@ footer p {
   .footer-contact ul li {
     border-bottom: 1px solid var(--card-border);
     padding: 14px 0;
+    justify-content: center;
   }
 
   .footer-contact ul li:last-child {
     border-bottom: none;
+  }
+
+  .footer-contact ul li + li::before {
+    display: none;
   }
 }
 
