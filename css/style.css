@@ -257,6 +257,8 @@ nav a:hover {
 
 .hero-content {
   max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .hero-desc {
@@ -265,11 +267,14 @@ nav a:hover {
   color: var(--text-dim);
   line-height: 1.7;
   margin-bottom: 36px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .hero-cta-row {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
   margin-bottom: 48px;
