@@ -103,7 +103,7 @@ body {
 .logo {
   font-family: "Barlow Condensed", sans-serif;
   font-size: 60px;
-  font-weight: 1000;
+  font-weight: 800;
   letter-spacing: .04em;
   color: var(--white);
   text-transform: uppercase;
