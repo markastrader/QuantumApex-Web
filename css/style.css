@@ -1071,6 +1071,80 @@ footer p {
 }
 
 
+/* ================= FOOTER CONTACT ================= */
+
+.footer-inner {
+  align-items: flex-start;
+}
+
+.footer-brand {
+  flex: 1;
+}
+
+.footer-contact {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-contact-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+  margin-top: 0;
+}
+
+.footer-contact ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--text-dim);
+  font-size: 12px;
+  transition: color var(--transition);
+}
+
+.footer-contact a:hover {
+  color: var(--gold);
+}
+
+.footer-contact-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  opacity: .55;
+  transition: opacity var(--transition);
+}
+
+.footer-contact a:hover .footer-contact-icon {
+  opacity: 1;
+}
+
+.footer-contact-platform {
+  font-weight: 600;
+  color: var(--text);
+  transition: color var(--transition);
+}
+
+.footer-contact a:hover .footer-contact-platform {
+  color: var(--gold-hi);
+}
+
+.footer-contact-handle {
+  color: var(--text-dim);
+}
+
 /* ================= REDUCED MOTION ================= */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1180,6 +1254,10 @@ footer p {
 
   .footer-meta {
     text-align: left;
+  }
+
+  .footer-contact {
+    align-items: flex-start;
   }
 
   /* Performance iframe shorter on mobile */
