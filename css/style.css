@@ -615,7 +615,7 @@ section {
 .section-sub {
   font-size: 15px;
   color: var(--text-dim);
-  max-width: 540px;
+  max-width: 900px;
   line-height: 1.7;
   margin-bottom: 56px;
 }
