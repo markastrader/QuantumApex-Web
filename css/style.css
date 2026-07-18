@@ -215,6 +215,130 @@ nav a:hover {
   pointer-events: none;
 }
 
+/* Two-column hero layout */
+.hero-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 64px;
+  align-items: center;
+}
+
+/* AI System Core panel */
+.hero-panel {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.hero-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: #0A0C12;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.hero-panel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--card-border);
+}
+
+.hero-panel-dot.active {
+  background: #4ADE80;
+  box-shadow: 0 0 6px rgba(74, 222, 128, .5);
+}
+
+.hero-panel-title {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-left: 4px;
+  flex: 1;
+}
+
+.hero-panel-body {
+  padding: 20px 20px 16px;
+}
+
+.hero-panel-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.hero-panel-row:last-child {
+  margin-bottom: 0;
+}
+
+.hero-panel-key {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--text-dim);
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.hero-panel-bar {
+  flex: 1;
+  height: 3px;
+  background: var(--card-border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.hero-panel-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-hi));
+  border-radius: 2px;
+  transition: width 1s ease;
+}
+
+.hero-panel-pct {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gold);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.hero-panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-top: 1px solid var(--card-border);
+  background: #0A0C12;
+}
+
+.hero-panel-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  color: var(--text-dim);
+  letter-spacing: .04em;
+}
+
+.hero-panel-version {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold-dim);
+  letter-spacing: .08em;
+}
+
 .eyebrow {
   font-size: 11px;
   font-weight: 600;
@@ -337,14 +461,61 @@ nav a:hover {
 }
 
 
-/* ================= STATUS BAR ================= */
+/* ================= STATUS CARD ================= */
+
+.status-section {
+  padding: 40px 0;
+  background: var(--void);
+}
+
+.status-card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.status-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: #0A0C12;
+  border-bottom: 1px solid var(--card-border);
+}
+
+.status-card-label {
+  font-family: "Barlow Condensed", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.status-card-tag {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .06em;
+  color: var(--gold-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-card-tag::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  flex-shrink: 0;
+}
 
 .status-inner {
   display: flex;
   align-items: stretch;
   overflow-x: auto;
-  border-top: 1px solid var(--card-border);
-  border-bottom: 1px solid var(--card-border);
   background: var(--card);
 }
 
@@ -995,6 +1166,20 @@ footer p {
 }
 
 
+/* ================= RESPONSIVE — WIDE TABLET (≤1024px) ================= */
+
+@media (max-width: 1024px) {
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+
+  .hero-panel {
+    max-width: 400px;
+  }
+}
+
+
 /* ================= RESPONSIVE — TABLET (≤900px) ================= */
 
 @media (max-width: 900px) {
@@ -1021,6 +1206,11 @@ footer p {
     padding: 80px 0 64px;
   }
 
+  /* Hide panel on small screens — text + badges carry the hero */
+  .hero-panel {
+    display: none;
+  }
+
   nav {
     gap: 16px;
   }
@@ -1033,7 +1223,16 @@ footer p {
     grid-template-columns: 1fr 1fr;
   }
 
-  /* Status bar stacks vertically */
+  /* Status card: tighter on mobile */
+  .status-section {
+    padding: 24px 0;
+  }
+
+  .status-card-tag {
+    display: none;
+  }
+
+  /* Status items stack vertically */
   .status-inner {
     flex-direction: column;
   }
