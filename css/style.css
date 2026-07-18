@@ -47,7 +47,7 @@ body {
 .container {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 32px;
 }
 
 
@@ -373,8 +373,12 @@ nav a:hover {
   margin-bottom: 28px;
 }
 
+.hero-content {
+  max-width: 1100px;
+}
+
 .hero-desc {
-  max-width: 780px;
+  max-width: 1000px;
   font-size: 16px;
   color: var(--text-dim);
   line-height: 1.7;
@@ -435,6 +439,7 @@ nav a:hover {
 .hero-badges {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
 }
 
@@ -599,6 +604,7 @@ section {
   text-transform: uppercase;
   color: var(--gold);
   margin-bottom: 14px;
+  text-align: center;
 }
 
 .section-title {
@@ -610,14 +616,16 @@ section {
   text-transform: uppercase;
   line-height: 1.05;
   margin-bottom: 14px;
+  text-align: center;
 }
 
 .section-sub {
   font-size: 15px;
   color: var(--text-dim);
-  max-width: 2000px;
+  max-width: 900px;
   line-height: 1.7;
-  margin-bottom: 56px;
+  margin: 0 auto 56px;
+  text-align: center;
 }
 
 
