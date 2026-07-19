@@ -131,6 +131,8 @@ body {
   flex-shrink: 0;
   min-width: 0;
   gap: 0;
+  /* allow mobile dropdown nav to escape to navbar width */
+  position: static;
 }
 
 nav {
@@ -2212,26 +2214,45 @@ nav a {
 @media (max-width: 640px) {
   .nav-hamburger {
     display: flex;
-    margin-left: 10px;
+    margin-left: 8px;
   }
 
-  /* Hide inline nav by default on mobile */
+  /* Logo: 2-baris supaya teks full terlihat, tidak terpotong */
+  .logo {
+    font-size: 14px;
+    white-space: normal;      /* boleh wrap ke baris ke-2 */
+    line-height: 1.15;
+    letter-spacing: .02em;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
+  .navbar .container {
+    height: 56px;
+    gap: 6px;
+  }
+
+  /* Lang switcher tetap terlihat */
+  .lang-switcher {
+    margin-left: 0;
+  }
+
+  /* ── Dropdown nav di bawah navbar ── */
   .navbar-right nav {
-    display: none;
+    display: none;                      /* hidden by default */
     position: fixed;
-    top: 0;
+    top: 58px;                          /* tepat di bawah navbar (height 56px + 2px signal bar) */
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(6, 8, 13, .97);
+    width: 100%;
+    background: rgba(6, 8, 13, .98);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--card-border);
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: stretch;
     gap: 0;
-    z-index: 800;
-    padding: 80px 0 40px;
+    z-index: 850;
+    padding: 0;
   }
 
   .navbar-right nav.open {
@@ -2239,44 +2260,54 @@ nav a {
   }
 
   .navbar-right nav a {
-    font-size: 22px;
-    font-family: "Barlow Condensed", sans-serif;
-    font-weight: 600;
-    letter-spacing: .12em;
-    color: var(--text);
-    padding: 18px 40px;
-    width: 100%;
-    text-align: center;
+    font-size: 12px;
+    font-family: "Inter", system-ui, sans-serif;
+    font-weight: 500;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 14px 20px;
     border-bottom: 1px solid var(--card-border);
-    transition: color var(--transition), background var(--transition);
+    text-align: left;
+    transition: color var(--transition), background var(--transition), padding-left var(--transition);
   }
 
-  .navbar-right nav a:first-child {
-    border-top: 1px solid var(--card-border);
+  .navbar-right nav a:last-child {
+    border-bottom: none;
   }
 
   .navbar-right nav a:hover {
     color: var(--gold-hi);
     background: var(--gold-glow);
+    padding-left: 28px;
+  }
+}
+
+
+
+@media (max-width: 390px) {
+  .logo {
+    font-size: 13px;
   }
 
-  /* Logo full width, no clipping */
-  .logo {
-    font-size: 16px;
-    white-space: nowrap;
-    flex-shrink: 1;
-    min-width: 0;
-    letter-spacing: .03em;
+  .lang-btn {
+    padding: 4px 8px;
+    font-size: 10px;
   }
 
   .navbar .container {
-    height: 56px;
-    gap: 8px;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 320px) {
+  .logo {
+    font-size: 11.5px;
   }
 
-  /* Lang switcher stays visible */
-  .lang-switcher {
-    margin-left: 0;
+  .lang-btn {
+    padding: 3px 6px;
+    font-size: 9.5px;
   }
 }
 
