@@ -115,8 +115,9 @@ body {
   letter-spacing: .04em;
   color: var(--white);
   text-transform: uppercase;
-  flex-shrink: 0;
+  flex-shrink: 1;
   white-space: nowrap;
+  min-width: 0;
 }
 
 .logo span {
@@ -141,7 +142,7 @@ nav {
 nav a {
   font-size: 11px;
   font-weight: 500;
-  letter-spacing: .09em;
+  letter-spacing: .07em;
   text-transform: uppercase;
   color: var(--text-dim);
   text-decoration: none;
@@ -1593,28 +1594,31 @@ footer p {
     gap: 4px;
   }
 
-  /* FIX #28: logo shrinks to fit navbar — reduce to 14px for better balance */
+  /* Logo: 2-line wrap saves width, both lines clearly readable */
   .logo {
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: .01em;
+    white-space: normal;
+    max-width: 34%;
+    line-height: 1.1;
   }
 
   nav {
-    gap: 8px;
+    gap: 7px;
   }
 
   nav a {
-    font-size: 10px;
-    letter-spacing: .05em;
+    font-size: 9.5px;
+    letter-spacing: .03em;
   }
 
   .lang-btn {
-    padding: 4px 8px;
-    font-size: 10px;
+    padding: 3px 7px;
+    font-size: 9.5px;
   }
 
   .lang-switcher {
-    margin-left: 5px;
+    margin-left: 4px;
   }
 
   .hero {
@@ -1666,15 +1670,15 @@ footer p {
 
 @media (max-width: 375px) {
   nav a {
-    font-size: 9.5px;
-    letter-spacing: .04em;
+    font-size: 9px;
+    letter-spacing: .02em;
   }
 
-  /* FIX #31: at 320–375px the full logo "QuantumApexMatrix GOLD" is too long.
-     Reduce to 13px and tighten tracking. */
+  /* At 375px: logo stays 2-line, reduce further */
   .logo {
-    font-size: 13px;
-    letter-spacing: .01em;
+    font-size: 11.5px;
+    letter-spacing: 0;
+    max-width: 30%;
   }
 
   .lang-btn {
@@ -1734,12 +1738,12 @@ footer p {
 
 /* Logo: fluid scale so it never pushes the nav off-screen */
 .logo {
-  font-size: clamp(12px, 3vw, 20px);
+  font-size: clamp(13px, 3.2vw, 20px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 42%;   /* hard cap so right-side always has room */
-  flex-shrink: 1;   /* allow shrink if truly needed */
+  max-width: 40%;
+  flex-shrink: 1;
 }
 
 /* navbar-right: flex + min-width:0 ensures it shrinks gracefully */
@@ -1762,6 +1766,35 @@ nav a {
 /* Lang switcher: always rigid */
 .lang-switcher {
   flex-shrink: 0;
+}
+
+/* ≤600px: logo wraps to 2 lines (QuantumApexMatrix / GOLD) — saves horizontal space */
+@media (max-width: 600px) {
+  .logo {
+    font-size: clamp(11px, 2.8vw, 15px);
+    white-space: normal;       /* allow wrap at the space before GOLD */
+    max-width: 36%;
+    line-height: 1.1;
+    letter-spacing: .02em;
+  }
+
+  nav {
+    gap: 8px;
+  }
+
+  nav a {
+    font-size: 10px;
+    letter-spacing: .04em;
+  }
+
+  .lang-switcher {
+    margin-left: 6px;
+  }
+
+  .lang-btn {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
 }
 
 
@@ -1868,7 +1901,11 @@ nav a {
   }
 }
 
-/* Mobile (≤768px): allow multi-row wrap, centred — matches EN layout exactly */
+/* Mobile (≤768px): wrap 2-1-2 layout
+   Row 1: badge 1 + 2  (each ~48% width)
+   Row 2: badge 3      (auto width, centred)
+   Row 3: badge 4 + 5  (each ~48% width)
+*/
 @media (max-width: 768px) {
   .hero-badges {
     flex-wrap: wrap;
@@ -1882,18 +1919,42 @@ nav a {
     padding: 5px 10px;
     letter-spacing: .02em;
   }
+
+  /* Badge 1 & 2: side by side on row 1, fixed ~47% so they sit as a pair */
+  .hero-badges .badge:nth-child(1),
+  .hero-badges .badge:nth-child(2) {
+    flex: 0 0 auto;
+    min-width: 44%;
+    justify-content: center;
+  }
+
+  /* Badge 3: alone on row 2, auto width centred */
+  .hero-badges .badge:nth-child(3) {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+
+  /* Badge 4 & 5: side by side on row 3 */
+  .hero-badges .badge:nth-child(4),
+  .hero-badges .badge:nth-child(5) {
+    flex: 0 0 auto;
+    min-width: 44%;
+    justify-content: center;
+  }
 }
 
-/* Ensure ID badges use same row structure as EN on mobile:
-   Row 1: 1 badge centred
-   Row 2: 2 badges
-   Row 3: 2 badges
-   Achieved via flex-basis so longer ID text wraps identically */
 @media (max-width: 480px) {
   .badge {
     font-size: 10px;
     padding: 5px 9px;
     letter-spacing: .01em;
+  }
+
+  .hero-badges .badge:nth-child(1),
+  .hero-badges .badge:nth-child(2),
+  .hero-badges .badge:nth-child(4),
+  .hero-badges .badge:nth-child(5) {
+    min-width: 43%;
   }
 }
 
@@ -2103,47 +2164,56 @@ nav a {
 
 @media (max-width: 390px) {
   .navbar .container {
-    gap: 4px;
+    gap: 3px;
     height: 56px;
   }
 
   .logo {
-    font-size: clamp(11px, 2.8vw, 14px);
-    max-width: 36%;
+    font-size: 12px;
+    max-width: 32%;
+    white-space: normal;
+    line-height: 1.1;
+    letter-spacing: .01em;
   }
 
   nav {
-    gap: 7px;
+    gap: 6px;
   }
 
   nav a {
-    font-size: 9.5px;
-    letter-spacing: .04em;
+    font-size: 9px;
+    letter-spacing: .03em;
   }
 
   .lang-btn {
-    padding: 3px 7px;
-    font-size: 9.5px;
+    padding: 3px 6px;
+    font-size: 9px;
   }
 
   .lang-switcher {
-    margin-left: 5px;
+    margin-left: 4px;
   }
 }
 
 @media (max-width: 320px) {
   .logo {
-    font-size: 10.5px;
-    max-width: 34%;
+    font-size: 10px;
+    max-width: 28%;
+    letter-spacing: 0;
   }
 
   nav a {
-    font-size: 9px;
-    letter-spacing: .02em;
+    font-size: 8.5px;
+    letter-spacing: 0;
   }
 
   nav {
     gap: 5px;
+  }
+
+  .lang-btn {
+    padding: 3px 5px;
+    font-size: 8.5px;
   }
 }
 
