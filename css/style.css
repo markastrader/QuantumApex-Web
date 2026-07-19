@@ -960,6 +960,10 @@ section {
 /* FIX #21: iframe height — use a better clamp range.
    Previous clamp(480px, 60vh, 760px) created inconsistency across breakpoints.
    New range: min 440px, ideal 58vh, max 720px. */
+.report-body {
+  background: #0D1018;
+}
+
 .report-body iframe {
   width: 100%;
   height: clamp(440px, 58vh, 720px);
