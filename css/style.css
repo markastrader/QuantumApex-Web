@@ -2160,62 +2160,123 @@ nav a {
 
 
 /* -------------------------------------------------------
-   MOBILE NAV — VERY SMALL SCREENS (≤375px / 320px)
-   Prioritise switcher visibility; shrink logo further
+   HAMBURGER BUTTON — hidden on desktop
 ------------------------------------------------------- */
 
-@media (max-width: 390px) {
-  .navbar .container {
-    gap: 3px;
-    height: 56px;
+.nav-hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  transition: border-color var(--transition);
+}
+
+.nav-hamburger:hover {
+  border-color: var(--gold-dim);
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 16px;
+  height: 1.5px;
+  background: var(--text-dim);
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .25s ease, background var(--transition);
+}
+
+.nav-hamburger[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+  background: var(--gold-hi);
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+.nav-hamburger[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+  background: var(--gold-hi);
+}
+
+/* -------------------------------------------------------
+   MOBILE NAV — ≤640px: hamburger replaces inline nav
+------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  .nav-hamburger {
+    display: flex;
+    margin-left: 10px;
   }
 
+  /* Hide inline nav by default on mobile */
+  .navbar-right nav {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(6, 8, 13, .97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    z-index: 800;
+    padding: 80px 0 40px;
+  }
+
+  .navbar-right nav.open {
+    display: flex;
+  }
+
+  .navbar-right nav a {
+    font-size: 22px;
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 600;
+    letter-spacing: .12em;
+    color: var(--text);
+    padding: 18px 40px;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid var(--card-border);
+    transition: color var(--transition), background var(--transition);
+  }
+
+  .navbar-right nav a:first-child {
+    border-top: 1px solid var(--card-border);
+  }
+
+  .navbar-right nav a:hover {
+    color: var(--gold-hi);
+    background: var(--gold-glow);
+  }
+
+  /* Logo full width, no clipping */
   .logo {
-    font-size: 12px;
-    max-width: 32%;
-    white-space: normal;
-    line-height: 1.1;
-    letter-spacing: .01em;
-  }
-
-  nav {
-    gap: 6px;
-  }
-
-  nav a {
-    font-size: 9px;
+    font-size: 16px;
+    white-space: nowrap;
+    flex-shrink: 1;
+    min-width: 0;
     letter-spacing: .03em;
   }
 
-  .lang-btn {
-    padding: 3px 6px;
-    font-size: 9px;
+  .navbar .container {
+    height: 56px;
+    gap: 8px;
   }
 
+  /* Lang switcher stays visible */
   .lang-switcher {
-    margin-left: 4px;
-  }
-}
-
-@media (max-width: 320px) {
-  .logo {
-    font-size: 10px;
-    max-width: 28%;
-    letter-spacing: 0;
-  }
-
-  nav a {
-    font-size: 8.5px;
-    letter-spacing: 0;
-  }
-
-  nav {
-    gap: 5px;
-  }
-
-  .lang-btn {
-    padding: 3px 5px;
-    font-size: 8.5px;
+    margin-left: 0;
   }
 }
 
