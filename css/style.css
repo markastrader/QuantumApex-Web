@@ -534,17 +534,16 @@ section {
   text-align: center;
 }
 
-.performance .section-sub {
-  white-space: nowrap;
-  font-size: 13px;
-  max-width: 100%;
-}
-
-@media (max-width: 768px) {
-  .performance .section-sub {
-    white-space: normal;
-    font-size: 13px;
-  }
+.section-sub {
+  font-size: 15px;
+  color: var(--text-dim);
+  /* FIX #14: max-width widened — 680px was causing 3+ line break on section-sub
+     for the Performance Dashboard description at laptop widths */
+  max-width: 760px;
+  line-height: 1.7;
+  /* FIX #15: bottom margin reduced — 48px between subtitle and content too large */
+  margin: 0 auto 40px;
+  text-align: center;
 }
 
 
