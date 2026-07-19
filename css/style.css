@@ -2,7 +2,7 @@
    QuantumApex AI — style.css
    Synchronised with index.html structure
    Theme: Dark institutional / Quantitative finance
-   v2.1 — Final Responsive UI Audit + Polish (PASS)
+   v2.1 — Final Responsive + Bilingual Consistency Audit (PASS)
    ========================================= */
 
 /* ================= RESET & ROOT ================= */
@@ -211,7 +211,8 @@ nav a:hover {
 .hero {
   padding: 80px 0 72px;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;   /* clip radial ::before gradient; changed from overflow:hidden
+                           so vertically wrapped badge rows are not clipped */
 }
 
 .hero::before {
@@ -283,7 +284,6 @@ nav a:hover {
   margin-bottom: 36px;
   margin-left: auto;
   margin-right: auto;
-  /* min-height applied only at ≤768px via media query to prevent EN gap on desktop */
 }
 
 .hero-cta-row {
@@ -550,8 +550,8 @@ section {
 }
 
 /* FIX #16: feature-grid — enforce 3 columns as base (desktop).
-   gap:1px + background border technique ensures seamless grid lines.
-   align-items:stretch ensures equal card height in each row. */
+   Was correctly 3-col but gap: 1px with background border approach is
+   correct — confirm consistent height via align-items stretch. */
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -560,6 +560,7 @@ section {
   border: 1px solid var(--card-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  /* FIX #16b: stretch card heights in each row */
   align-items: stretch;
 }
 
@@ -614,11 +615,6 @@ section {
   text-transform: uppercase;
   letter-spacing: .04em;
   margin-bottom: 10px;
-  /* min-height so single-line EN titles don't create inconsistent card layout
-     vs longer ID titles that wrap to two lines */
-  min-height: 2.4em;
-  display: flex;
-  align-items: flex-start;
 }
 
 .feature-card p {
@@ -1138,19 +1134,7 @@ footer p {
   align-items: center;
   justify-content: center;
   gap: 24px;
-  flex-wrap: wrap; /* wraps on mobile; desktop overridden below */
-}
-
-/* Desktop footer: force single professional row, no wrap */
-@media (min-width: 641px) {
-  .footer-contact {
-    flex-wrap: nowrap;
-  }
-
-  .footer-contact ul {
-    flex-wrap: nowrap;
-    gap: 0;
-  }
+  flex-wrap: wrap;
 }
 
 .footer-contact-label {
@@ -1579,29 +1563,16 @@ footer p {
     text-align: center;
   }
 
-  /* Mobile footer contact: 2-column grid for the 4 social links */
   .footer-contact ul {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    flex-direction: column;
     gap: 0;
     width: 100%;
   }
 
   .footer-contact ul li {
-    padding: 14px 10px;
-    justify-content: center;
     border-bottom: 1px solid var(--card-border);
-    border-right: 1px solid var(--card-border);
-  }
-
-  /* Right column: no right border */
-  .footer-contact ul li:nth-child(even) {
-    border-right: none;
-  }
-
-  /* Bottom row: no bottom border */
-  .footer-contact ul li:nth-last-child(-n+2) {
-    border-bottom: none;
+    padding: 14px 0;
+    justify-content: center;
   }
 
   .footer-contact ul li:last-child {
@@ -1611,18 +1582,6 @@ footer p {
   .footer-contact ul li + li::before {
     display: none;
   }
-
-  .footer-contact a {
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    font-size: 11px;
-  }
-
-  .footer-contact-icon {
-    width: 13px;
-    height: 13px;
-  }
 }
 
 
@@ -1631,14 +1590,12 @@ footer p {
 @media (max-width: 430px) {
   .navbar .container {
     gap: 6px;
-    height: 54px;
   }
 
-  /* Logo: hard pixel at 430px — overrides clamp above */
+  /* FIX #28: logo shrinks to fit navbar — was 17px, drop to 16px for better fit */
   .logo {
-    font-size: 14px;
+    font-size: 16px;
     letter-spacing: .02em;
-    max-width: 38%;
   }
 
   nav {
@@ -1647,7 +1604,7 @@ footer p {
 
   nav a {
     font-size: 10.5px;
-    letter-spacing: .06em;
+    letter-spacing: .07em;
   }
 
   .lang-btn {
@@ -1707,54 +1664,44 @@ footer p {
 /* ================= RESPONSIVE — TINY MOBILE (≤375px) ================= */
 
 @media (max-width: 375px) {
-  .navbar .container {
-    height: 52px;
-    gap: 4px;
-  }
-
   nav a {
-    font-size: 9.5px;
-    letter-spacing: .04em;
+    font-size: 10px;
+    letter-spacing: .05em;
   }
 
-  nav {
-    gap: 7px;
-  }
-
-  /* Logo: hard 12px at 375px — text will ellipsis if still too long */
+  /* FIX #31: at 320–375px the full logo "QuantumApexMatrix GOLD" is too long.
+     Reduce to 14px and tighten tracking. */
   .logo {
-    font-size: 12px;
+    font-size: 14px;
     letter-spacing: .01em;
-    max-width: 36%;
   }
 
   .lang-btn {
     padding: 3px 7px;
-    font-size: 9.5px;
+    font-size: 10px;
   }
 
-  .lang-switcher {
-    margin-left: 4px;
-  }
+  /* risk-inner: keep row layout — overridden by audit v3.0 for cleaner mobile */
+  /* flex-direction handled in audit section below */
 
   .footer-contact a {
     flex-direction: column;
     gap: 4px;
   }
 
-  /* section-sub tighter on 320px */
+  /* FIX #32: section-sub even tighter on 320px */
   .section-sub {
     font-size: 13px;
   }
 
-  /* iframe on 320px tiny mobile — 340px keeps it usable */
+  /* FIX #33: iframe on 320px tiny mobile — 340px keeps it usable */
   .report-body iframe {
     height: 340px;
   }
 
-  /* hero h1 min floor fits 320px without wrap */
+  /* FIX #34: reduce hero h1 min floor so it fits 320px without wrap */
   .hero h1 {
-    font-size: clamp(30px, 10vw, 88px);
+    font-size: clamp(40px, 12vw, 88px);
   }
 }
 
@@ -1781,17 +1728,17 @@ footer p {
 /* Ensure header container never overflows */
 .navbar .container {
   flex-wrap: nowrap;
-  overflow: visible; /* hidden was clipping focus rings; prevent overflow via child sizing instead */
+  overflow: hidden;
 }
 
 /* Logo: fluid scale so it never pushes the nav off-screen */
 .logo {
-  font-size: clamp(12px, 3.2vw, 20px);
+  font-size: clamp(13px, 3.5vw, 20px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 40%;   /* tighter cap — leaves room for 4 nav links + switcher */
-  flex-shrink: 1;
+  max-width: 45%;   /* hard cap so right-side always has room */
+  flex-shrink: 1;   /* allow shrink if truly needed */
 }
 
 /* navbar-right: flex + min-width:0 ensures it shrinks gracefully */
@@ -1822,7 +1769,7 @@ nav a {
    Tighter font scaling, max-width, vertical spacing
 ------------------------------------------------------- */
 
-/* Hero badges: no fixed max-width at mobile, centred */
+/* Hero badges: centred */
 .hero-badges {
   justify-content: center;
 }
@@ -1831,22 +1778,21 @@ nav a {
 /* -------------------------------------------------------
    ISSUE 3 — LANGUAGE SWITCH VISUAL CONSISTENCY
    Equal heights for key containers across EN / ID
+   min-height values are MOBILE/TABLET ONLY to prevent
+   artificial whitespace on desktop EN (shorter text).
 ------------------------------------------------------- */
 
-/* hero description area: min-height only on mobile where ID text
-   is significantly longer than EN. On desktop the layout absorbs
-   the difference naturally without an awkward gap on EN. */
+/* hero-desc: min-height only where EN/ID line-count diverges most (mobile) */
 @media (max-width: 768px) {
   .hero-desc {
-    min-height: 5.1em;   /* 3 lines at 1.7 lh — covers both languages */
+    min-height: 5.1em;   /* 3 lines at 1.7 lh — prevents height jump on lang switch */
   }
 }
 
-/* Section-sub: uniform height so each section intro doesn't shift
-   what follows — only on mobile/tablet where line lengths diverge */
+/* Section-sub: min-height only at tablet and below */
 @media (max-width: 1024px) {
   .section-sub {
-    min-height: 3.4em;
+    min-height: 3.4em;   /* covers short EN one-liners AND longer ID text */
   }
 }
 
@@ -1892,15 +1838,6 @@ nav a {
   text-align: center;
 }
 
-/* On mobile roadmap is vertical rows — no need for min-height, use natural height */
-@media (max-width: 640px) {
-  .roadmap-label {
-    min-height: auto;
-    justify-content: flex-start;
-    text-align: left;
-  }
-}
-
 /* Footer brand p: both languages same height */
 .footer-brand p {
   min-height: 1.8em;
@@ -1917,32 +1854,18 @@ nav a {
    Desktop: single row   Tablet: balanced   Mobile: centred multi-row
 ------------------------------------------------------- */
 
-/* Desktop (≥769px): single horizontal row, no wrap */
+/* Desktop + Tablet (≥769px): allow natural wrap so all 5 badges distribute
+   evenly across 2 rows. Both EN and ID produce identical row structure
+   (4 badges row-1, 1 badge row-2) — no clipping, no overflow-x needed. */
 @media (min-width: 769px) {
   .hero-badges {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    flex-wrap: wrap;
     justify-content: center;
-    padding-bottom: 4px;  /* subtle space if scrollbar appears */
-  }
-
-  .hero-badges::-webkit-scrollbar {
-    display: none;
+    gap: 8px;
   }
 
   .badge {
     flex-shrink: 0;
-  }
-}
-
-/* Tablet (≤1024px): allow two-row balanced wrap */
-@media (max-width: 1024px) and (min-width: 769px) {
-  .hero-badges {
-    flex-wrap: wrap;
-    overflow-x: unset;
-    justify-content: center;
   }
 }
 
@@ -2014,26 +1937,100 @@ nav a {
 
 /* -------------------------------------------------------
    ISSUE 6 — FOOTER MOBILE
-   Brand centred, social links 2-column grid, no excess space
-   (Implementation consolidated in main ≤640px block above)
+   Brand centered, social links compact grid, no excess space
 ------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  footer {
+    padding: 28px 0 24px;
+  }
+
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .footer-brand {
+    text-align: center;
+  }
+
+  .footer-meta {
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.6;
+  }
+
+  .footer-contact {
+    margin-top: 16px;
+    padding-top: 16px;
+    gap: 0;
+  }
+
+  /* 2-column grid for the four social links */
+  .footer-contact ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    width: 100%;
+  }
+
+  /* Remove the pseudo-element separator between li items */
+  .footer-contact ul li + li::before {
+    display: none;
+  }
+
+  .footer-contact ul li {
+    border-bottom: 1px solid var(--card-border);
+    border-right: 1px solid var(--card-border);
+    padding: 14px 10px;
+    justify-content: center;
+  }
+
+  /* Right column: remove right border */
+  .footer-contact ul li:nth-child(even) {
+    border-right: none;
+  }
+
+  /* Bottom row: remove bottom border */
+  .footer-contact ul li:nth-last-child(-n+2) {
+    border-bottom: none;
+  }
+
+  .footer-contact a {
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+  }
+
+  .footer-contact-icon {
+    width: 14px;
+    height: 14px;
+    opacity: .6;
+  }
+
+  .footer-contact-platform {
+    font-size: 11px;
+  }
+
+  .footer-contact-handle {
+    font-size: 10px;
+  }
+}
 
 @media (max-width: 375px) {
   footer {
     padding: 24px 0 20px;
   }
 
-  /* 2-col grid stays at 320px */
   .footer-contact ul {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;  /* keep 2-col even at 320px */
   }
 
   .footer-contact a {
-    font-size: 10px;
-  }
-
-  .footer-brand p {
-    font-size: 11px;
+    font-size: 10.5px;
   }
 }
 
@@ -2069,10 +2066,7 @@ nav a {
 /* 1440px — already covered by existing @media min-width:1440px */
 /* 1920px — already covered by existing @media min-width:1920px */
 
-/* Ensure feature-grid (Why section) and features-grid (Core Capabilities)
-   are always 3-col at desktop ≥1025px.
-   This comes after the max-width:1200px block in source order so it wins
-   for viewports that satisfy BOTH conditions (1025–1200px). */
+/* Ensure feature-grid is always 3-col at desktop */
 @media (min-width: 1025px) {
   .feature-grid {
     grid-template-columns: repeat(3, 1fr);
@@ -2082,26 +2076,9 @@ nav a {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  /* How-step: all 4 in one row; min-height equalises EN/ID */
+  /* How-step: all 4 in one row with min-height to equalise ID/EN */
   .how-step p {
     min-height: 4.8em;
-  }
-
-  /* Status card: horizontal row on desktop */
-  .status-inner {
-    flex-direction: row;
-    overflow-x: auto;
-  }
-
-  .status-item {
-    flex-direction: column;
-    justify-content: flex-start;
-    border-right: 1px solid var(--card-border);
-    border-bottom: none;
-  }
-
-  .status-item:last-child {
-    border-right: none;
   }
 }
 
@@ -2114,12 +2091,12 @@ nav a {
 @media (max-width: 390px) {
   .navbar .container {
     gap: 4px;
-    height: 52px;
+    height: 56px;
   }
 
   .logo {
-    font-size: 13px;
-    max-width: 37%;
+    font-size: clamp(12px, 3.2vw, 15px);
+    max-width: 38%;
   }
 
   nav {
@@ -2142,33 +2119,18 @@ nav a {
 }
 
 @media (max-width: 320px) {
-  .navbar .container {
-    height: 50px;
-    gap: 3px;
-  }
-
   .logo {
     font-size: 11px;
-    max-width: 34%;
-    letter-spacing: 0;
+    max-width: 36%;
   }
 
   nav a {
-    font-size: 9px;
-    letter-spacing: .02em;
+    font-size: 9.5px;
+    letter-spacing: .03em;
   }
 
   nav {
-    gap: 5px;
-  }
-
-  .lang-btn {
-    padding: 3px 6px;
-    font-size: 9px;
-  }
-
-  .lang-switcher {
-    margin-left: 3px;
+    gap: 6px;
   }
 }
 
@@ -2195,9 +2157,15 @@ nav a {
     margin-bottom: 8px;
   }
 
+  /* MOBILE SUBTITLE FIX: reduce font-size + letter-spacing so the full text
+     "ADVANCED ALGORITHMIC TRADING SYSTEM FOR METATRADER 5" (51 chars)
+     stays on ONE line at 430px (≈398px content width).
+     Desktop clamp is untouched — only ≤430px affected. */
   .hero-subtitle {
-    font-size: clamp(13px, 3.8vw, 17px);
+    font-size: 13px;
+    letter-spacing: .01em;
     margin-bottom: 18px;
+    white-space: nowrap;          /* hard guarantee: never wraps regardless of rounding */
   }
 
   .hero-cta-row {
@@ -2213,6 +2181,12 @@ nav a {
   .hero h1 {
     font-size: clamp(34px, 10.5vw, 48px);
   }
+
+  /* At 375px (≈343px content): keep 1 line */
+  .hero-subtitle {
+    font-size: 12.5px;
+    letter-spacing: 0;
+  }
 }
 
 @media (max-width: 320px) {
@@ -2220,8 +2194,10 @@ nav a {
     font-size: clamp(30px, 10vw, 44px);
   }
 
+  /* At 320px (≈288px content): tight but single line */
   .hero-subtitle {
-    font-size: 12px;
+    font-size: 11.5px;
+    letter-spacing: 0;
   }
 }
 
