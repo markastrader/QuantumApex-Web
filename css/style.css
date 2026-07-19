@@ -134,14 +134,14 @@ body {
 
 nav {
   display: flex;
-  gap: 28px;
+  gap: 20px;
   flex-wrap: nowrap;
 }
 
 nav a {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  letter-spacing: .12em;
+  letter-spacing: .09em;
   text-transform: uppercase;
   color: var(--text-dim);
   text-decoration: none;
@@ -1590,22 +1590,22 @@ footer p {
 
 @media (max-width: 430px) {
   .navbar .container {
-    gap: 6px;
+    gap: 4px;
   }
 
-  /* FIX #28: logo shrinks to fit navbar — was 17px, drop to 16px for better fit */
+  /* FIX #28: logo shrinks to fit navbar — reduce to 14px for better balance */
   .logo {
-    font-size: 16px;
-    letter-spacing: .02em;
+    font-size: 14px;
+    letter-spacing: .01em;
   }
 
   nav {
-    gap: 10px;
+    gap: 8px;
   }
 
   nav a {
-    font-size: 10.5px;
-    letter-spacing: .07em;
+    font-size: 10px;
+    letter-spacing: .05em;
   }
 
   .lang-btn {
@@ -1614,7 +1614,7 @@ footer p {
   }
 
   .lang-switcher {
-    margin-left: 6px;
+    margin-left: 5px;
   }
 
   .hero {
@@ -1666,14 +1666,14 @@ footer p {
 
 @media (max-width: 375px) {
   nav a {
-    font-size: 10px;
-    letter-spacing: .05em;
+    font-size: 9.5px;
+    letter-spacing: .04em;
   }
 
   /* FIX #31: at 320–375px the full logo "QuantumApexMatrix GOLD" is too long.
-     Reduce to 14px and tighten tracking. */
+     Reduce to 13px and tighten tracking. */
   .logo {
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: .01em;
   }
 
@@ -1734,11 +1734,11 @@ footer p {
 
 /* Logo: fluid scale so it never pushes the nav off-screen */
 .logo {
-  font-size: clamp(13px, 3.5vw, 20px);
+  font-size: clamp(12px, 3vw, 20px);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 45%;   /* hard cap so right-side always has room */
+  max-width: 42%;   /* hard cap so right-side always has room */
   flex-shrink: 1;   /* allow shrink if truly needed */
 }
 
@@ -1868,7 +1868,7 @@ nav a {
   }
 }
 
-/* Mobile (≤768px): allow multi-row wrap, centred */
+/* Mobile (≤768px): allow multi-row wrap, centred — matches EN layout exactly */
 @media (max-width: 768px) {
   .hero-badges {
     flex-wrap: wrap;
@@ -1878,8 +1878,22 @@ nav a {
   }
 
   .badge {
-    font-size: 11px;
-    padding: 5px 11px;
+    font-size: 10.5px;
+    padding: 5px 10px;
+    letter-spacing: .02em;
+  }
+}
+
+/* Ensure ID badges use same row structure as EN on mobile:
+   Row 1: 1 badge centred
+   Row 2: 2 badges
+   Row 3: 2 badges
+   Achieved via flex-basis so longer ID text wraps identically */
+@media (max-width: 480px) {
+  .badge {
+    font-size: 10px;
+    padding: 5px 9px;
+    letter-spacing: .01em;
   }
 }
 
@@ -2094,17 +2108,17 @@ nav a {
   }
 
   .logo {
-    font-size: clamp(12px, 3.2vw, 15px);
-    max-width: 38%;
+    font-size: clamp(11px, 2.8vw, 14px);
+    max-width: 36%;
   }
 
   nav {
-    gap: 8px;
+    gap: 7px;
   }
 
   nav a {
-    font-size: 10px;
-    letter-spacing: .05em;
+    font-size: 9.5px;
+    letter-spacing: .04em;
   }
 
   .lang-btn {
@@ -2119,17 +2133,17 @@ nav a {
 
 @media (max-width: 320px) {
   .logo {
-    font-size: 11px;
-    max-width: 36%;
+    font-size: 10.5px;
+    max-width: 34%;
   }
 
   nav a {
-    font-size: 9.5px;
-    letter-spacing: .03em;
+    font-size: 9px;
+    letter-spacing: .02em;
   }
 
   nav {
-    gap: 6px;
+    gap: 5px;
   }
 }
 
