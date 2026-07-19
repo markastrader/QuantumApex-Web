@@ -896,24 +896,34 @@ section {
 /* ================= PERFORMANCE ================= */
 
 .performance {
-  background: var(--void);
+  background: linear-gradient(
+    162deg,
+    #08090F 0%,
+    #0B0F18 35%,
+    #0D1120 65%,
+    #080B12 100%
+  );
   position: relative;
   overflow: hidden;
+  /* Subtle gold-edge framing above and below the section */
+  border-top: 1px solid rgba(184, 151, 58, .10);
+  border-bottom: 1px solid rgba(184, 151, 58, .08);
 }
 
-/* Subtle ambient glow behind the dashboard */
+/* Ambient radial glow — larger + slightly warmer than hero */
 .performance::before {
   content: "";
   position: absolute;
-  top: -10%;
+  top: -15%;
   left: 50%;
   transform: translateX(-50%);
-  width: 900px;
-  height: 500px;
+  width: 1100px;
+  height: 600px;
   background: radial-gradient(ellipse at center,
-    rgba(184, 151, 58, .055) 0%,
-    rgba(184, 151, 58, .02) 40%,
-    transparent 70%);
+    rgba(184, 151, 58, .07) 0%,
+    rgba(184, 151, 58, .03) 35%,
+    rgba(30, 37, 53, .15) 60%,
+    transparent 75%);
   pointer-events: none;
   z-index: 0;
 }
@@ -929,23 +939,24 @@ section {
 }
 
 /* ── Dashboard outer shell ── */
-/* Layered panel: deep charcoal base + gold accent border + depth shadow */
+/* Layered panel: deep charcoal base + premium gold accent border + institutional depth */
 .report-frame {
   position: relative;
-  background: #080B12;
-  border: 1px solid rgba(184, 151, 58, .28);
-  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #0A0D16 0%, #070A11 100%);
+  border: 1px solid rgba(212, 175, 55, .28);
+  border-radius: 14px;
   overflow: hidden;
   max-width: 100%;
-  /* Institutional depth: primary shadow + gold corona */
+  /* Multi-layer depth: offset shadow + diffuse lift + gold corona glow */
   box-shadow:
-    0 0 0 1px rgba(184, 151, 58, .08),
-    0 4px 24px rgba(0, 0, 0, .55),
-    0 16px 56px rgba(0, 0, 0, .35),
-    0 0 80px rgba(184, 151, 58, .04);
+    0 0 0 1px rgba(212, 175, 55, .07),        /* inner ring — almost invisible gold lip */
+    0 2px 8px rgba(0, 0, 0, .40),             /* close shadow — crisp lift */
+    0 8px 32px rgba(0, 0, 0, .50),            /* mid shadow — panel depth */
+    0 24px 72px rgba(0, 0, 0, .45),           /* far shadow — institutional weight */
+    0 0 90px rgba(184, 151, 58, .055);        /* gold aura — premium warmth */
 }
 
-/* Gold accent line at the very top — thin but deliberate */
+/* Gold accent line at the very top — refined sweep, broader peak */
 .report-frame::before {
   content: "";
   position: absolute;
@@ -955,22 +966,26 @@ section {
   height: 2px;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(184, 151, 58, .55) 20%,
-    rgba(212, 175, 85, .85) 50%,
-    rgba(184, 151, 58, .55) 80%,
+    rgba(184, 151, 58, .30) 10%,
+    rgba(212, 175, 55, .75) 30%,
+    rgba(220, 185, 70, .95) 50%,
+    rgba(212, 175, 55, .75) 70%,
+    rgba(184, 151, 58, .30) 90%,
     transparent 100%);
   z-index: 2;
   pointer-events: none;
 }
 
-/* Subtle inner border glow — creates depth illusion */
+/* Inner border glow — glass-effect sheen on top, deep shadow at bottom */
 .report-frame::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset 0 1px 0 rgba(184, 151, 58, .12),
-              inset 0 -1px 0 rgba(0, 0, 0, .4);
+  box-shadow:
+    inset 0 1px 0 rgba(212, 175, 55, .18),    /* top inner sheen */
+    inset 0 2px 12px rgba(184, 151, 58, .04), /* subtle warm bloom */
+    inset 0 -2px 0 rgba(0, 0, 0, .55);        /* bottom inner shadow */
   pointer-events: none;
   z-index: 3;
 }
@@ -980,13 +995,18 @@ section {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 11px 16px;
-  background: linear-gradient(180deg, #0C0F18 0%, #080B12 100%);
-  border-bottom: 1px solid rgba(184, 151, 58, .15);
+  padding: 11px 18px;
+  background: linear-gradient(180deg,
+    #0F1320 0%,
+    #0A0D18 60%,
+    #080B14 100%);
+  border-bottom: 1px solid rgba(212, 175, 55, .18);
   min-width: 0;
   overflow: hidden;
   position: relative;
   z-index: 1;
+  /* Faint horizontal sheen across the bar */
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .3);
 }
 
 .report-dot {
@@ -1022,23 +1042,24 @@ section {
 }
 
 /* ── iframe panel ── */
-/* Dark panel background provides a visual floor.
-   The report itself has a white bg; the clipping context + topbar chrome
-   keeps the entire assembly reading as one unified dark dashboard. */
+/* Deep floor panel — the light report content is held within a dark shell.
+   The chrome + bottom padding reads as a unified institutional dashboard. */
 .report-body {
-  background: #05070D;
+  background: linear-gradient(to bottom, #040710 0%, #06090F 100%);
   position: relative;
+  /* Bottom padding so the report doesn't flush against the outer border radius */
+  padding-bottom: 6px;
 }
 
-/* Thin inner top shadow to separate chrome from report content */
+/* Stronger top shadow to create clear separation between chrome and iframe */
 .report-body::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, .45), transparent);
+  height: 6px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .60), transparent);
   z-index: 2;
   pointer-events: none;
 }
@@ -1350,6 +1371,27 @@ footer p {
   section {
     padding: 88px 0;
   }
+
+  /* Performance section: slightly deeper gradient on wide desktop */
+  .performance {
+    background: linear-gradient(
+      158deg,
+      #070810 0%,
+      #0B0F1A 30%,
+      #0E1222 60%,
+      #08090F 100%
+    );
+  }
+
+  /* Report frame: fuller shadow stack at 1440px+ */
+  .report-frame {
+    box-shadow:
+      0 0 0 1px rgba(212, 175, 55, .07),
+      0 2px 8px rgba(0, 0, 0, .40),
+      0 12px 40px rgba(0, 0, 0, .55),
+      0 32px 88px rgba(0, 0, 0, .45),
+      0 0 110px rgba(184, 151, 58, .06);
+  }
 }
 
 @media (min-width: 1920px) {
@@ -1637,12 +1679,13 @@ footer p {
   /* Performance section: tighter section padding on tablet */
   .performance {
     padding: 64px 0;
+    background: linear-gradient(162deg, #08090F 0%, #0B0F18 50%, #080B12 100%);
   }
 
   /* Reduce glow size on tablet to avoid edge bleed */
   .performance::before {
-    width: 600px;
-    height: 360px;
+    width: 680px;
+    height: 400px;
   }
 
   .footer-top {
@@ -1749,6 +1792,7 @@ footer p {
   /* Performance: tighter vertical padding on small mobile */
   .performance {
     padding: 52px 0;
+    background: #080B12;  /* simplified solid for mobile perf */
   }
 
   /* Suppress ambient glow on small mobile — prevents rendering overhead */
@@ -1758,7 +1802,12 @@ footer p {
 
   /* Report frame: reduce border-radius slightly for tighter mobile feel */
   .report-frame {
-    border-radius: 8px;
+    border-radius: 10px;
+    /* Simplified shadow stack for mobile GPU budget */
+    box-shadow:
+      0 0 0 1px rgba(212, 175, 55, .07),
+      0 4px 20px rgba(0, 0, 0, .50),
+      0 16px 48px rgba(0, 0, 0, .40);
   }
 
   /* Topbar: slightly more compact on small mobile */
@@ -1842,11 +1891,12 @@ footer p {
     font-size: 10px;
   }
 
-  /* Reduce box-shadow complexity on low-power devices */
+  /* Minimal shadow at 375px — lowest power budget */
   .report-frame {
+    border-radius: 8px;
     box-shadow:
-      0 0 0 1px rgba(184, 151, 58, .08),
-      0 4px 16px rgba(0, 0, 0, .5);
+      0 0 0 1px rgba(212, 175, 55, .08),
+      0 4px 16px rgba(0, 0, 0, .55);
   }
 
   /* FIX #34: reduce hero h1 min floor so it fits 320px without wrap */
