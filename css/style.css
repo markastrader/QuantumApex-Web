@@ -1920,25 +1920,23 @@ nav a {
     letter-spacing: .02em;
   }
 
-  /* Badge 1 & 2: side by side on row 1, fixed ~47% so they sit as a pair */
+  /* Badge 1 & 2: pair on row 1 — flex-basis 47% forces wrap after 2 */
   .hero-badges .badge:nth-child(1),
   .hero-badges .badge:nth-child(2) {
-    flex: 0 0 auto;
-    min-width: 44%;
+    flex: 0 0 47%;
     justify-content: center;
   }
 
-  /* Badge 3: alone on row 2, auto width centred */
+  /* Badge 3: ALONE on row 2 — basis > 50% so nothing can sit beside it */
   .hero-badges .badge:nth-child(3) {
-    flex: 0 0 auto;
-    min-width: 0;
+    flex: 0 0 60%;
+    justify-content: center;
   }
 
-  /* Badge 4 & 5: side by side on row 3 */
+  /* Badge 4 & 5: pair on row 3 */
   .hero-badges .badge:nth-child(4),
   .hero-badges .badge:nth-child(5) {
-    flex: 0 0 auto;
-    min-width: 44%;
+    flex: 0 0 47%;
     justify-content: center;
   }
 }
@@ -1954,7 +1952,11 @@ nav a {
   .hero-badges .badge:nth-child(2),
   .hero-badges .badge:nth-child(4),
   .hero-badges .badge:nth-child(5) {
-    min-width: 43%;
+    flex: 0 0 46%;
+  }
+
+  .hero-badges .badge:nth-child(3) {
+    flex: 0 0 60%;
   }
 }
 
