@@ -363,6 +363,7 @@ nav a:hover {
   font-weight: 500;
   color: var(--text-dim);
   letter-spacing: .04em;
+  white-space: nowrap; /* prevent text wrapping inside badge pill */
 }
 
 .badge .dot {
