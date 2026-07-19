@@ -549,7 +549,6 @@
     btn.addEventListener('click', function () {
       const isOpen = nav.classList.toggle('open');
       btn.setAttribute('aria-expanded', isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
     /* Close menu when a nav link is clicked */
@@ -557,7 +556,6 @@
       link.addEventListener('click', function () {
         nav.classList.remove('open');
         btn.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
       });
     });
 
@@ -566,7 +564,14 @@
       if (e.key === 'Escape' && nav.classList.contains('open')) {
         nav.classList.remove('open');
         btn.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
+      }
+    });
+
+    /* Close when clicking outside navbar */
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.navbar') && nav.classList.contains('open')) {
+        nav.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
       }
     });
   })();
