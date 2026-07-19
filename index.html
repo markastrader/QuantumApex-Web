@@ -441,7 +441,7 @@
         <span class="report-live">&#x1F7E2; LIVE</span>
       </div>
       <div class="report-body">
-        <iframe src="reports/Performance_Report.html" title="QuantumApex AI Performance Report"></iframe>
+        <iframe src="reports/Performance_Report.html" title="QuantumApex AI Performance Report" id="performanceFrame"></iframe>
       </div>
     </div>
   </div>
@@ -574,6 +574,102 @@
         btn.setAttribute('aria-expanded', 'false');
       }
     });
+  })();
+</script>
+<script>
+  /* ── Performance Report iframe — dark premium theme injection ── */
+  (function () {
+    const frame = document.getElementById('performanceFrame');
+    if (!frame) return;
+
+    function injectDarkTheme() {
+      try {
+        const doc = frame.contentDocument || frame.contentWindow.document;
+        if (!doc) return;
+
+        /* Remove existing injected style if re-injecting */
+        const existing = doc.getElementById('qa-dark-inject');
+        if (existing) existing.remove();
+
+        const style = doc.createElement('style');
+        style.id = 'qa-dark-inject';
+        style.textContent = `
+          /* ── QuantumApex AI — Dark Premium Inject ── */
+          html, body {
+            background: #0D1018 !important;
+            color: #C8D0DC !important;
+          }
+
+          /* Tables */
+          table {
+            background: transparent !important;
+            border-collapse: collapse !important;
+          }
+          th {
+            background: #111520 !important;
+            color: #B8973A !important;
+            border-color: #1E2535 !important;
+            font-size: 11px !important;
+            letter-spacing: .06em !important;
+            text-transform: uppercase !important;
+          }
+          td {
+            background: transparent !important;
+            color: #C8D0DC !important;
+            border-color: #1A2030 !important;
+          }
+          tr:nth-child(even) td {
+            background: rgba(30, 37, 53, 0.4) !important;
+          }
+          tr:hover td {
+            background: rgba(184, 151, 58, 0.06) !important;
+          }
+
+          /* Positive / negative values */
+          td[style*="color: green"], td[style*="color:green"],
+          .positive, .profit { color: #4ADE80 !important; }
+          td[style*="color: red"], td[style*="color:red"],
+          .negative, .loss   { color: #F87171 !important; }
+
+          /* Links */
+          a { color: #B8973A !important; }
+          a:hover { color: #D4AF55 !important; }
+
+          /* Headings */
+          h1, h2, h3, h4, h5, h6 {
+            color: #EEF2F7 !important;
+          }
+
+          /* Generic white/light boxes */
+          div, section, article, aside, header, footer, main {
+            background-color: transparent !important;
+          }
+
+          /* Inputs, selects */
+          input, select, textarea {
+            background: #111520 !important;
+            color: #C8D0DC !important;
+            border-color: #1E2535 !important;
+          }
+
+          /* Scrollbar */
+          ::-webkit-scrollbar { width: 6px; height: 6px; }
+          ::-webkit-scrollbar-track { background: #0D1018; }
+          ::-webkit-scrollbar-thumb { background: #1E2535; border-radius: 3px; }
+          ::-webkit-scrollbar-thumb:hover { background: #7A6228; }
+        `;
+        doc.head.appendChild(style);
+      } catch (e) {
+        /* Cross-origin fallback: iframe stays as-is */
+        console.warn('QA: iframe style inject blocked (cross-origin)', e);
+      }
+    }
+
+    frame.addEventListener('load', injectDarkTheme);
+    /* In case iframe already loaded */
+    if (frame.contentDocument && frame.contentDocument.readyState === 'complete') {
+      injectDarkTheme();
+    }
   })();
 </script>
 </body>
