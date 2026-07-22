@@ -2644,9 +2644,9 @@ nav a {
     border-radius: 6px;
   }
 }
-}
-.footer-contact ul li:nth-child(3),
-.footer-contact ul li:nth-child(4) {
-  display: none;
-}
 
+
+/* Temporary disabled social links */
+.footer-contact .social-disabled {
+    display: none;
+}
